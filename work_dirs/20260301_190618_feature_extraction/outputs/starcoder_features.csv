@@ -1,0 +1,124 @@
+Error ID,Model,Task ID,Semantic Characteristics,Syntactic Characteristics,Prompt length,LOC,Number of AST nodes of correct solutions,pass_rate,run_err_rate,syn_err,gold_sim_CB,gold_sim_B,mut_sim_CB,mut_sim_B,timeout_rate,black_count,semgrep_count,Aa1,Aa2,Ab1,Ac1,Ac2,Ad1,Ad4,Ae1,Ae2,Ae3,Af1,Af2,Ag1,Ba1,Bb1,Bb2,Bc2,Bd1,Bd2,Bd3,Be4,Be1,Be5,Be6,Bf1,Bg1,Bg2
+609,StarCoder,1,Ae2 Meaningless code snippet,Bg2 Missing code block,74,14,100,1.0,0.0,0,,0.411822,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+610,StarCoder,5,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,40,8,79,0.884615,0.115385,0,,0.750437,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+611,StarCoder,6,Ae2 Meaningless code snippet,Bg2 Missing code block,61,11,79,1.0,0.0,0,,0.405233,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+612,StarCoder,8,Ac2 Undefined name,Bd1 Incorrect function name,62,6,57,1.0,0.0,0,,0.830107,,,,,,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+613,StarCoder,10,Aa2 Incorrect condition,Bb1 For error,79,6,79,0.917197,0.082803,0,,0.868311,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+614,StarCoder,10,Aa2 Incorrect condition,Ba1 If error,79,6,79,0.917197,0.082803,0,,0.868311,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+615,StarCoder,10,Ac1 Wrong method/variable,Bd2 Incorrect function arguments,79,6,79,0.917197,0.082803,0,,0.868311,,,,,,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+616,StarCoder,14,Ac1 Wrong method/variable,Bd2 Incorrect function arguments,29,4,51,1.0,0.0,0,,0.927386,,,,,,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+617,StarCoder,14,Aa2 Incorrect condition,Bb1 For error,29,4,51,1.0,0.0,0,,0.927386,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+618,StarCoder,17,Ae2 Meaningless code snippet,Bg2 Missing code block,95,2,45,1.0,0.0,0,,0.631255,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+619,StarCoder,18,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,38,5,67,0.020916,0.979084,0,,0.711322,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+620,StarCoder,19,Af2 Missing multiple steps,Bg2 Missing code block,53,13,68,0.849624,0.150376,0,,0.49175,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+621,StarCoder,20,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,62,14,139,0.804975,0.195025,0,,0.740895,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+622,StarCoder,21,Ad1 Incorrect arithmetic operation,Bc2 Incorrect return value,52,3,57,0.953187,0.046813,0,,0.730841,,,,,,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+626,StarCoder,25,Ae2 Meaningless code snippet,Bg2 Missing code block,70,12,91,1.0,0.0,0,,0.569736,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+627,StarCoder,26,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,44,3,50,0.983815,0.016185,0,,0.596819,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+631,StarCoder,32,Ae2 Meaningless code snippet,Bg1 Incorrect code block,131,11,148,1.0,0.0,0,,0.344163,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+632,StarCoder,33,Af2 Missing multiple steps,Bg2 Missing code block,77,3,35,0.964767,0.035233,0,,0.789288,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+633,StarCoder,33,Ac1 Wrong method/variable,Bd2 Incorrect function arguments,77,3,35,0.964767,0.035233,0,,0.789288,,,,,,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+634,StarCoder,36,Aa2 Incorrect condition,Bb1 For error,34,9,86,0.551282,0.448718,0,,0.682947,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+635,StarCoder,36,Aa2 Incorrect condition,Ba1 If error,34,9,86,0.551282,0.448718,0,,0.682947,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+636,StarCoder,37,Af2 Missing multiple steps,Bg2 Missing code block,62,9,93,0.941658,0.058342,0,,0.769886,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+637,StarCoder,37,Ac1 Wrong method/variable,Bd2 Incorrect function arguments,62,9,93,0.941658,0.058342,0,,0.769886,,,,,,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+638,StarCoder,39,Ae2 Meaningless code snippet,Bg1 Incorrect code block,33,15,124,0.0,1.0,1,,0.2779,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+639,StarCoder,41,Ad1 Incorrect arithmetic operation,Bc2 Incorrect return value,107,1,14,1.0,0.0,0,,0.980118,,,,,,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+641,StarCoder,54,Ac1 Wrong method/variable,Bd1 Incorrect function name,39,1,24,0.121272,0.878728,0,,0.958491,,,,,,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+645,StarCoder,64,Ae2 Meaningless code snippet,Bg2 Missing code block,68,5,63,1.0,0.0,0,,0.67366,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+646,StarCoder,65,Af2 Missing multiple steps,Bg2 Missing code block,42,5,65,0.756839,0.243161,0,,0.545674,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+647,StarCoder,69,Ae2 Meaningless code snippet,Bg2 Missing code block,87,8,73,0.974634,0.025366,0,,0.670496,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+648,StarCoder,70,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,56,6,63,0.99187,0.00813,0,,0.641559,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+649,StarCoder,71,Ac2 Undefined name,Bf1 Import error,68,6,105,0.588702,0.411298,0,,0.792343,,,,,,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0
+650,StarCoder,72,Ac2 Undefined name,Ba1 If error,118,9,73,1.0,0.0,0,,0.940464,,,,,,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+651,StarCoder,73,Ae2 Meaningless code snippet,Bg2 Missing code block,73,5,57,1.0,0.0,0,,0.707361,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+652,StarCoder,74,Aa2 Incorrect condition,Ba1 If error,88,10,56,0.055781,0.944219,0,,0.84849,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+653,StarCoder,75,Ae2 Meaningless code snippet,Bg2 Missing code block,41,13,102,1.0,0.0,0,,0.173724,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+654,StarCoder,76,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,64,6,46,0.144432,0.855568,0,,0.561861,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+655,StarCoder,77,Ae3 Wrong (logical) direction,Bc2 Incorrect return value,53,2,36,0.560694,0.439306,0,,0.835613,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+656,StarCoder,80,Aa2 Incorrect condition,Ba1 If error,59,6,92,0.218124,0.781876,0,,0.870325,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+657,StarCoder,81,Ae2 Meaningless code snippet,Bg2 Missing code block,127,29,182,1.0,0.0,0,,0.463024,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+658,StarCoder,82,Ac2 Undefined name,Bd1 Incorrect function name,37,7,52,1.0,0.0,0,,0.572161,,,,,,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+659,StarCoder,83,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,25,2,26,0.990826,0.009174,0,,0.497544,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+660,StarCoder,84,Ac1 Wrong method/variable,Bd2 Incorrect function arguments,81,1,31,0.958333,0.041667,0,,0.822114,,,,,,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+661,StarCoder,85,Af2 Missing multiple steps,Bg1 Incorrect code block,26,1,42,0.911824,0.088176,0,,0.560437,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+662,StarCoder,86,Ac1 Wrong method/variable,Bd2 Incorrect function arguments,76,1,33,0.919563,0.080437,0,,0.761134,,,,,,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+663,StarCoder,86,Ab1 Constant value error,Bd3 Incorrect method call target,76,1,33,0.919563,0.080437,0,,0.761134,,,,,,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0
+664,StarCoder,88,Af2 Missing multiple steps,Bg2 Missing code block,102,1,44,0.512413,0.487587,0,,0.839068,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+665,StarCoder,89,Af2 Missing multiple steps,Bg2 Missing code block,58,8,59,0.873016,0.126984,0,,0.66897,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+666,StarCoder,89,Ad1 Incorrect arithmetic operation,Bd2 Incorrect function arguments,58,8,59,0.873016,0.126984,0,,0.66897,,,,,,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+667,StarCoder,90,Af2 Missing multiple steps,Bg2 Missing code block,53,2,33,0.147165,0.852835,0,,0.829977,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+668,StarCoder,91,Aa2 Incorrect condition,Bb1 For error,60,3,39,0.332008,0.667992,0,,0.617143,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+669,StarCoder,91,Ab1 Constant value error,Ba1 If error,60,3,39,0.332008,0.667992,0,,0.617143,,,,,,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+670,StarCoder,93,Ae2 Meaningless code snippet,Bg2 Missing code block,61,4,71,1.0,0.0,0,,0.257958,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+671,StarCoder,94,Ac2 Undefined name,Bd1 Incorrect function name,80,13,118,1.0,0.0,0,,0.650278,,,,,,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+672,StarCoder,95,Af2 Missing multiple steps,Bg2 Missing code block,69,21,125,0.017176,0.982824,0,,0.787636,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+673,StarCoder,96,Ae2 Meaningless code snippet,Bg2 Missing code block,48,10,62,1.0,0.0,0,,0.635142,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+674,StarCoder,99,Ac1 Wrong method/variable,Bd1 Incorrect function name,83,16,110,0.008392,0.991608,0,,0.634137,,,,,,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+675,StarCoder,99,Af2 Missing multiple steps,Bg2 Missing code block,83,16,110,0.008392,0.991608,0,,0.634137,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+676,StarCoder,100,Ae2 Meaningless code snippet,Bg2 Missing code block,84,1,25,1.0,0.0,0,,0.783836,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+677,StarCoder,101,Af2 Missing multiple steps,Bg2 Missing code block,59,10,60,0.552684,0.447316,0,,0.793591,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+678,StarCoder,102,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,49,7,47,0.453782,0.546218,0,,0.779231,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+679,StarCoder,103,Ad1 Incorrect arithmetic operation,Bd2 Incorrect function arguments,69,6,61,0.117771,0.882229,0,,0.843015,,,,,,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+680,StarCoder,105,Ae2 Meaningless code snippet,Bg2 Missing code block,133,19,66,0.90239,0.09761,0,,0.590338,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+681,StarCoder,106,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,83,11,95,0.972222,0.027778,0,,0.567855,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+682,StarCoder,108,Ac2 Undefined name,Ba1 If error,66,7,105,0.999008,0.000992,0,,0.509917,,,,,,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+683,StarCoder,109,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,185,11,98,0.121086,0.878914,0,,0.917535,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+684,StarCoder,110,Aa2 Incorrect condition,Ba1 If error,114,11,64,0.421053,0.578947,0,,0.786909,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+685,StarCoder,111,Ae2 Meaningless code snippet,Bg2 Missing code block,79,11,92,1.0,0.0,0,,0.427398,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+686,StarCoder,112,Ac1 Wrong method/variable,Be5 Incorrect variable name,101,2,45,0.545726,0.454274,0,,0.789209,,,,,,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+687,StarCoder,113,Ab1 Constant value error,Be4 Incorrect constant,98,5,89,0.998986,0.001014,0,,0.736628,,,,,,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0
+688,StarCoder,113,Ad1 Incorrect arithmetic operation,Bd2 Incorrect function arguments,98,5,89,0.998986,0.001014,0,,0.736628,,,,,,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+689,StarCoder,114,Af1 Missing one step,Bg2 Missing code block,34,11,79,0.967391,0.032609,0,,0.671291,,,,,,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+690,StarCoder,114,Ab1 Constant value error,Be4 Incorrect constant,34,11,79,0.967391,0.032609,0,,0.671291,,,,,,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0
+691,StarCoder,114,Aa2 Incorrect condition,Ba1 If error,34,11,79,0.967391,0.032609,0,,0.671291,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+692,StarCoder,115,Ae2 Meaningless code snippet,Bg2 Missing code block,148,1,33,1.0,0.0,0,,0.803758,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+693,StarCoder,117,Ae2 Meaningless code snippet,Bg2 Missing code block,105,9,78,1.0,0.0,0,,0.733008,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+694,StarCoder,118,Aa2 Incorrect condition,Bb1 For error,75,8,98,0.483712,0.516288,0,,0.762884,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+695,StarCoder,118,Aa2 Incorrect condition,Ba1 If error,75,8,98,0.483712,0.516288,0,,0.762884,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+696,StarCoder,119,Ae2 Meaningless code snippet,Bg2 Missing code block,103,13,103,1.0,0.0,0,,0.6244,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+697,StarCoder,120,Ac1 Wrong method/variable,Bd2 Incorrect function arguments,111,5,37,0.635015,0.364985,0,,0.945343,,,,,,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+698,StarCoder,121,Aa1 Missing condition,Bd2 Incorrect function arguments,42,1,43,0.826866,0.173134,0,,0.738594,,,,,,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+699,StarCoder,122,Ac1 Wrong method/variable,Bd2 Incorrect function arguments,63,1,35,0.874627,0.125373,0,,0.631567,,,,,,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+700,StarCoder,122,Af2 Missing multiple steps,Bg2 Missing code block,63,1,35,0.874627,0.125373,0,,0.631567,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+701,StarCoder,123,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,142,12,87,0.979021,0.020979,0,,0.841534,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+702,StarCoder,125,Af2 Missing multiple steps,Bg2 Missing code block,71,6,65,0.564039,0.435961,0,,0.562701,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+703,StarCoder,126,Af2 Missing multiple steps,Bg2 Missing code block,99,9,96,0.040474,0.959526,0,,0.800698,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+704,StarCoder,127,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,143,15,114,0.736395,0.263605,0,,0.741509,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+705,StarCoder,128,Ae2 Meaningless code snippet,Bg2 Missing code block,63,3,66,0.998006,0.001994,0,,0.62356,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+706,StarCoder,129,Ae2 Meaningless code snippet,Bg2 Missing code block,249,22,218,1.0,0.0,0,,0.648246,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+707,StarCoder,130,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,126,9,97,1.0,0.0,0,,0.81987,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+708,StarCoder,131,Ae2 Meaningless code snippet,Bg2 Missing code block,33,11,64,0.894515,0.105485,0,,0.494143,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+709,StarCoder,132,Ae2 Meaningless code snippet,Bg2 Missing code block,62,16,115,0.919132,0.080868,0,,0.517508,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+710,StarCoder,133,Ac2 Undefined name,Bf1 Import error,80,5,34,0.99901,0.00099,0,,0.900836,,,,,,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0
+711,StarCoder,134,Ae3 Wrong (logical) direction,Bc2 Incorrect return value,62,2,47,0.021978,0.978022,0,,0.666866,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+712,StarCoder,134,Af2 Missing multiple steps,Bg2 Missing code block,62,2,47,0.021978,0.978022,0,,0.666866,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+713,StarCoder,135,Ae2 Meaningless code snippet,Bg2 Missing code block,50,7,57,1.0,0.0,0,,0.634652,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+714,StarCoder,136,Ae2 Meaningless code snippet,Bg2 Missing code block,62,3,65,1.0,0.0,0,,0.603853,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+715,StarCoder,137,Af2 Missing multiple steps,Bg2 Missing code block,68,5,89,0.161706,0.838294,0,,0.485444,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+716,StarCoder,138,Ae2 Meaningless code snippet,Bg2 Missing code block,31,1,22,0.305785,0.694215,0,,0.815412,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+717,StarCoder,139,Ad1 Incorrect arithmetic operation,Bc2 Incorrect return value,46,6,41,0.977099,0.022901,0,,0.753417,,,,,,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+718,StarCoder,140,Ac2 Undefined name,Bf1 Import error,49,20,171,1.0,0.0,0,,0.673572,,,,,,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0
+719,StarCoder,140,Af2 Missing multiple steps,Bg2 Missing code block,49,20,171,1.0,0.0,0,,0.673572,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+720,StarCoder,141,Aa2 Incorrect condition,Ba1 If error,124,14,111,0.019493,0.980507,0,,0.853817,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+721,StarCoder,142,Af1 Missing one step,Bg2 Missing code block,111,9,98,0.977183,0.022817,0,,0.847851,,,,,,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+722,StarCoder,143,Ac2 Undefined name,Bd1 Incorrect function name,93,11,96,1.0,0.0,0,,0.693234,,,,,,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+724,StarCoder,145,Ac1 Wrong method/variable,Bd2 Incorrect function arguments,63,7,85,0.960239,0.039761,0,,0.605042,,,,,,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+725,StarCoder,146,Aa2 Incorrect condition,Ba1 If error,60,8,76,0.80402,0.19598,0,,0.655459,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+726,StarCoder,147,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,93,8,135,0.957983,0.042017,0,,0.675117,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+727,StarCoder,148,Af2 Missing multiple steps,Bg2 Missing code block,109,9,97,1.0,0.0,0,,0.723255,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+728,StarCoder,148,Ac1 Wrong method/variable,Bd2 Incorrect function arguments,109,9,97,1.0,0.0,0,,0.723255,,,,,,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+729,StarCoder,149,Af2 Missing multiple steps,Bg2 Missing code block,124,6,51,0.599391,0.400609,0,,0.701832,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+730,StarCoder,150,Aa2 Incorrect condition,Ba1 If error,42,8,43,0.260913,0.739087,0,,0.556605,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+731,StarCoder,151,Aa1 Missing condition,Ba1 If error,65,1,44,0.793241,0.206759,0,,0.765178,,,,,,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+732,StarCoder,153,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,155,9,160,0.674877,0.325123,0,,0.788265,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+733,StarCoder,154,Ae3 Wrong (logical) direction,Bg1 Incorrect code block,49,7,86,0.013917,0.986083,0,,0.719112,,,,,,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+734,StarCoder,156,Ae2 Meaningless code snippet,Bg2 Missing code block,40,14,105,1.0,0.0,0,,0.096553,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+735,StarCoder,157,Af1 Missing one step,Bg2 Missing code block,55,1,77,0.003956,0.996044,0,,0.73072,,,,,,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+736,StarCoder,158,Ae2 Meaningless code snippet,Bg2 Missing code block,59,1,33,1.0,0.0,0,,0.682371,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+737,StarCoder,159,Af2 Missing multiple steps,Bg2 Missing code block,162,4,40,0.42057,0.57943,0,,0.930731,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+738,StarCoder,160,Ae2 Meaningless code snippet,Bg2 Missing code block,131,4,55,1.0,0.0,0,,0.767665,,,,,,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+739,StarCoder,161,Af2 Missing multiple steps,Bg2 Missing code block,56,14,92,0.9556,0.0444,0,,0.674538,,,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+740,StarCoder,162,Ac2 Undefined name,Bf1 Import error,27,2,27,0.998008,0.001992,0,,0.742338,,,,,,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0
+741,StarCoder,163,Af1 Missing one step,Bg2 Missing code block,43,3,60,0.543611,0.456389,0,,0.815585,,,,,,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+742,StarCoder,163,Aa2 Incorrect condition,Bb1 For error,43,3,60,0.543611,0.456389,0,,0.815585,,,,,,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0
