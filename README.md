@@ -4,8 +4,20 @@ short for "Llm-generated codE Self-repair method baSed On causal aNalysis"
 # 项目仓库结构
 ```
 .
-├── data/ 
-└── src/ 
+├── src/                          # LESSON 特征提取代码
+│   ├── run_feature_extraction.py
+│   └── lesson_feature_extractor/
+├── data/                         # 数据集与原始数据
+│   ├── defects4codellm-main/
+│   └── human-eval-master/
+├── work_dirs/                    # 实验运行输出（config/log/features）
+├── CALL-main/                    # 对照/参考项目代码
+├── 课件/                           # 课程材料
+├── CLAUDE.md                     # 项目规范与常用命令
+├── Task.md                       # 当前任务说明
+├── README.md
+├── *.zip                         # 备份/原始压缩包
+└── .idea/                        # IDE 配置
 ```
 
 # Feature Design
@@ -51,6 +63,7 @@ short for "Llm-generated codE Self-repair method baSed On causal aNalysis"
 | 11 | broad-exception-caught |  |
 | 12 | broad-exception-raised |  |
 | 13 | unnecessary-lambda |  |
+
 ## Semantic Errors
 | No. | Feature | Description |
 | --- | --- | --- |
