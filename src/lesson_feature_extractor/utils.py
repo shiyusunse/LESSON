@@ -100,6 +100,18 @@ def get_git_hash() -> str:
         )
         return result.stdout.strip()
     except Exception:
+        pass
+
+    try:
+        safe_dir = Path.cwd().resolve().as_posix()
+        result = subprocess.run(
+            ["git", "-c", f"safe.directory={safe_dir}", "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return result.stdout.strip()
+    except Exception:
         return "N/A (not a git repository)"
 
 
@@ -114,4 +126,3 @@ def write_simple_yaml(path: Path, data: Mapping[str, Any], encoding: str) -> Non
             continue
         lines.append(f"{key}: {value}")
     path.write_text("\n".join(lines) + "\n", encoding=encoding)
-

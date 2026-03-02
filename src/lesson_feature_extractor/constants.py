@@ -38,7 +38,7 @@ MODEL_TO_FILES: Dict[str, Dict[str, str]] = {
 GT_CODE_JSON: str = "gt_code.json"
 TEST_CASE_JSON: str = "HumanEvalPlus-test.json"
 
-MODEL_FEATURE_COLUMNS: List[str] = [
+BASE_MODEL_FEATURE_COLUMNS: List[str] = [
     "pass_rate",
     "run_err_rate",
     "syn_err",
@@ -50,6 +50,24 @@ MODEL_FEATURE_COLUMNS: List[str] = [
     "black_count",
     "semgrep_count",
 ]
+
+PYLINT_CODE_SMELL_COLUMNS: List[str] = [
+    "invalid-name",
+    "singleton-comparison",
+    "unnecessary-lambda-assignment",
+    "non-ascii-name",
+    "disallowed-name",
+    "too-many-arguments",
+    "too-many-nested-blocks",
+    "too-many-boolean-expressions",
+    "consider-merging-isinstance",
+    "chained-comparison",
+    "broad-exception-caught",
+    "broad-exception-raised",
+    "unnecessary-lambda",
+]
+
+MODEL_FEATURE_COLUMNS: List[str] = BASE_MODEL_FEATURE_COLUMNS + PYLINT_CODE_SMELL_COLUMNS
 
 TASK_FEATURE_COLUMNS: List[str] = [
     "prompt_len",

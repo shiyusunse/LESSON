@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import ast
 import hashlib
+import json
 import keyword
 import math
 import re
@@ -16,7 +17,13 @@ from collections import Counter
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
-from .constants import GT_CODE_JSON, MODEL_FEATURE_COLUMNS, MODEL_TO_FILES, TEST_CASE_JSON
+from .constants import (
+    GT_CODE_JSON,
+    MODEL_FEATURE_COLUMNS,
+    MODEL_TO_FILES,
+    PYLINT_CODE_SMELL_COLUMNS,
+    TEST_CASE_JSON,
+)
 from .utils import load_json, parse_task_id
 
 _BLEU_CACHE: Dict[Tuple[str, str], float] = {}
@@ -24,6 +31,8 @@ _CODE_BLEU_CACHE: Dict[Tuple[str, str], float] = {}
 _BLACK_CACHE: Dict[str, float] = {}
 _SEMGREP_CACHE: Dict[str, float] = {}
 _SEMGREP_AVAILABLE: bool | None = None
+_PYLINT_CACHE: Dict[str, Dict[str, float]] = {}
+_PYLINT_AVAILABLE: bool | None = None
 
 
 @contextmanager
@@ -241,6 +250,72 @@ def semgrep_issue_count(source_code: str) -> float:
     return issue_count
 
 
+def pylint_available() -> bool:
+    """判断 pylint 是否可用。"""
+    global _PYLINT_AVAILABLE
+    if _PYLINT_AVAILABLE is not None:
+        return _PYLINT_AVAILABLE
+    result = subprocess.run(
+        [sys.executable, "-m", "pylint", "--version"],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="ignore",
+        check=False,
+    )
+    _PYLINT_AVAILABLE = result.returncode == 0
+    return _PYLINT_AVAILABLE
+
+
+def pylint_code_smell_counts(source_code: str) -> Dict[str, float]:
+    """调用 pylint 统计指定代码异味数量。"""
+    code_digest = code_hash(source_code)
+    if code_digest in _PYLINT_CACHE:
+        return dict(_PYLINT_CACHE[code_digest])
+
+    if not pylint_available():
+        nan_payload: Dict[str, float] = {column: math.nan for column in PYLINT_CODE_SMELL_COLUMNS}
+        _PYLINT_CACHE[code_digest] = nan_payload
+        return dict(nan_payload)
+
+    counts: Dict[str, float] = {column: 0.0 for column in PYLINT_CODE_SMELL_COLUMNS}
+    with workspace_temp_dir("pylint") as temp_dir:
+        temp_path = temp_dir / "pylint_call.py"
+        temp_path.write_text(source_code, encoding="utf-8")
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "pylint",
+                str(temp_path),
+                "--score=n",
+                "--reports=n",
+                "--output-format=json",
+                "--disable=all",
+                f"--enable={','.join(PYLINT_CODE_SMELL_COLUMNS)}",
+            ],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="ignore",
+            check=False,
+        )
+        payload_text = result.stdout.strip()
+        if payload_text:
+            try:
+                payload = json.loads(payload_text)
+                if isinstance(payload, list):
+                    for item in payload:
+                        symbol = str(item.get("symbol", ""))
+                        if symbol in counts:
+                            counts[symbol] += 1.0
+            except json.JSONDecodeError:
+                counts = {column: math.nan for column in PYLINT_CODE_SMELL_COLUMNS}
+
+    _PYLINT_CACHE[code_digest] = counts
+    return dict(counts)
+
+
 def shutil_which(command_name: str) -> str | None:
     """查找可执行文件路径。"""
     try:
@@ -340,18 +415,24 @@ def build_model_feature_map(model_name: str, website_data_dir: Path, encoding: s
         )
         black_count = black_diff_count(generated_code)
         semgrep_count = semgrep_issue_count(generated_code)
+        pylint_counts = pylint_code_smell_counts(generated_code)
 
-        feature_map[task_id] = {
-            MODEL_FEATURE_COLUMNS[0]: round(pass_rate, 6),
-            MODEL_FEATURE_COLUMNS[1]: round(run_err_rate, 6),
-            MODEL_FEATURE_COLUMNS[2]: syn_err,
-            MODEL_FEATURE_COLUMNS[3]: round(gold_sim_cb, 6),
-            MODEL_FEATURE_COLUMNS[4]: round(gold_sim_b, 6),
-            MODEL_FEATURE_COLUMNS[5]: round(mut_sim_cb, 6) if not math.isnan(mut_sim_cb) else math.nan,
-            MODEL_FEATURE_COLUMNS[6]: round(mut_sim_b, 6) if not math.isnan(mut_sim_b) else math.nan,
-            MODEL_FEATURE_COLUMNS[7]: math.nan,
-            MODEL_FEATURE_COLUMNS[8]: round(black_count, 6) if not math.isnan(black_count) else math.nan,
-            MODEL_FEATURE_COLUMNS[9]: round(semgrep_count, 6) if not math.isnan(semgrep_count) else math.nan,
+        row: Dict[str, Any] = {
+            "pass_rate": round(pass_rate, 6),
+            "run_err_rate": round(run_err_rate, 6),
+            "syn_err": syn_err,
+            "gold_sim_CB": round(gold_sim_cb, 6),
+            "gold_sim_B": round(gold_sim_b, 6),
+            "mut_sim_CB": round(mut_sim_cb, 6) if not math.isnan(mut_sim_cb) else math.nan,
+            "mut_sim_B": round(mut_sim_b, 6) if not math.isnan(mut_sim_b) else math.nan,
+            "timeout_rate": math.nan,
+            "black_count": round(black_count, 6) if not math.isnan(black_count) else math.nan,
+            "semgrep_count": round(semgrep_count, 6) if not math.isnan(semgrep_count) else math.nan,
         }
+        for column in PYLINT_CODE_SMELL_COLUMNS:
+            value = pylint_counts.get(column, math.nan)
+            row[column] = int(value) if not math.isnan(value) else math.nan
+
+        feature_map[task_id] = {key: row.get(key, math.nan) for key in MODEL_FEATURE_COLUMNS}
 
     return feature_map

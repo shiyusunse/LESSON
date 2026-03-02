@@ -52,7 +52,7 @@ short for "Llm-generated codE Self-repair method baSed On causal aNalysis"
 
     Seed： 当前使用的随机种子。
 
-    Git Hash： 代码版本号。
+    Git Hash： 代码版本号。对应的仓库是常用命令/备份中的仓库
 
     Config： 所有超参数的列表。
 
@@ -115,8 +115,9 @@ git -c http.extraHeader="Authorization: Basic $auth" push -u origin main
 ```
 
 ## 开发强制要求
-1. **虚拟环境强制要求：** 所有 Python 项目必须使用虚拟环境LESSON
+1. **虚拟环境强制要求：** 不需要更改或创建，由用户通过conda来自行设置，允许查询，默认执行python代码的虚拟环境是LESSON
 2. **禁止更改data文件夹下的内容**
 3. **优先使用python语言**
-4. **修改代码的同时同步修改对应的REAMDE文档**
+4. **修改代码的同时同步修改仓库中所有对应的REAMDE文档**
+5. **每次修改仓库前，先上传github备份**
 

@@ -50,19 +50,21 @@ short for "Llm-generated codE Self-repair method baSed On causal aNalysis"
 ## Code smell metrics
 | No. | Feature | Description |
 | --- | --- | --- |
-| 1 | invalid-name |  |
-| 2 | singleton-comparison |  |
-| 3 | unnecessary-lambda-assignment |  |
-| 4 | non-ascii-name |  |
-| 5 | disallowed-name |  |
-| 6 | too-many-arguments |  |
-| 7 | too-many-nested-blocks |  |
-| 8 | too-many-boolean-expressions |  |
-| 9 | consider-merging-isinstance |  |
-| 10 | chained-comparison |  |
-| 11 | broad-exception-caught |  |
-| 12 | broad-exception-raised |  |
-| 13 | unnecessary-lambda |  |
+| 1 | invalid-name | Count of names that do not follow naming style conventions (Pylint `invalid-name`). |
+| 2 | singleton-comparison | Count of singleton comparisons that should use `is`/`is not` (Pylint `singleton-comparison`). |
+| 3 | unnecessary-lambda-assignment | Count of lambda assignments that can be replaced by direct function references (Pylint `unnecessary-lambda-assignment`). |
+| 4 | non-ascii-name | Count of identifiers containing non-ASCII characters (Pylint `non-ascii-name`). |
+| 5 | disallowed-name | Count of identifiers using disallowed placeholder names (Pylint `disallowed-name`). |
+| 6 | too-many-arguments | Count of function/method definitions with too many parameters (Pylint `too-many-arguments`). |
+| 7 | too-many-nested-blocks | Count of code blocks with excessive nesting depth (Pylint `too-many-nested-blocks`). |
+| 8 | too-many-boolean-expressions | Count of condition expressions with too many boolean clauses (Pylint `too-many-boolean-expressions`). |
+| 9 | consider-merging-isinstance | Count of repeated `isinstance` checks that can be merged (Pylint `consider-merging-isinstance`). |
+| 10 | chained-comparison | Count of boolean chains that should be rewritten as chained comparisons (Pylint `chained-comparison`). |
+| 11 | broad-exception-caught | Count of overly broad exceptions caught in `except` clauses (Pylint `broad-exception-caught`). |
+| 12 | broad-exception-raised | Count of overly broad exceptions raised directly (Pylint `broad-exception-raised`). |
+| 13 | unnecessary-lambda | Count of lambda expressions that can be replaced by existing callables (Pylint `unnecessary-lambda`). |
+
+上述 13 个 Code smell 特征在输出 CSV 中位于 `semgrep_count` 与语义特征 `Aa1` 之间。
 
 ## Semantic Errors
 | No. | Feature | Description |

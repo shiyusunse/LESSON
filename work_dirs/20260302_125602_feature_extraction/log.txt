@@ -1,0 +1,13 @@
+Command: src/run_feature_extraction.py
+Environment: Python 3.10.19
+Seed: 42
+Git Hash: 764a88de3188c17b35ad89be67ac826d9511979e
+Config:
+  defects_data_dir: data/defects4codellm-main/data
+  website_data_dir: data/defects4codellm-main/website/src/data
+  humaneval_jsonl_path: data/human-eval-master/data/HumanEval.jsonl/human-eval-v2-20210705.jsonl
+  output_root: work_dirs
+  run_name: 20260302_125602_feature_extraction
+  seed: 42
+  models: CodeGen-16B,InCoder-1B,GPT-3.5,GPT-4,SantaCoder,StarCoder
+  encoding: utf-8
