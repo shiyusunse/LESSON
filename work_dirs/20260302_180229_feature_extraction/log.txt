@@ -1,7 +1,7 @@
 ﻿Command: src/run_feature_extraction.py
 Environment: Python 3.10.19
 Seed: 42
-Git Hash: cd305949d646dbb1000a77cea25cf3e7316cdc22
+Git Hash: 622f077aa5031c521abdfddc7155079d7cda79c2
 Config:
   defects_data_dir: data/defects4codellm-main/data
   website_data_dir: data/defects4codellm-main/website/src/data

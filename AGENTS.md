@@ -16,33 +16,21 @@ short for "Llm-generated codE Self-repair method baSed On causal aNalysis"
 2. **禁止更改data文件夹下的内容**
 3. **优先使用python语言**
 
-## 常用命令
-### 备份
-```powershell
-# 需要先准备 GitHub PAT（classic，至少勾选 repo 权限）
-$env:GITHUB_USER = "shiyusunse"
-$env:GITHUB_REPO = "LESSON"
-$env:GITHUB_TOKEN = "<YOUR_GITHUB_PAT>"
+## GitHub 备份流程（强制）
 
-# 若尚未初始化仓库，则初始化并首次提交
-if (-not (Test-Path .git)) { git init -b main }
-git add .
-git commit -m "backup: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" 2>$null
+触发条件：
+- 用户说“备份到github”“提交并推送”“同步远端备份”等同义表达。
 
-# 首次备份时创建远程仓库（已存在会返回 422，可忽略）
-$headers = @{
-    Authorization = "Bearer $env:GITHUB_TOKEN"
-    Accept        = "application/vnd.github+json"
-    "User-Agent"  = "LESSON-backup-script"
-}
-$payload = @{ name = $env:GITHUB_REPO; private = $false; auto_init = $false } | ConvertTo-Json
-try {
-    Invoke-RestMethod -Method Post -Uri "https://api.github.com/user/repos" -Headers $headers -Body $payload -ContentType "application/json" | Out-Null
-} catch {}
-
-# 推送到 GitHub
-git remote remove origin 2>$null
-git remote add origin "https://github.com/$($env:GITHUB_USER)/$($env:GITHUB_REPO).git"
-$auth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($env:GITHUB_USER):$($env:GITHUB_TOKEN)"))
-git -c http.extraHeader="Authorization: Basic $auth" push -u origin main
-```
+执行要求：
+1. 获取当前 HEAD：`git rev-parse HEAD`
+2. 定位最新工作目录（按目录名倒序）：
+   - `Get-ChildItem work_dirs -Directory | Sort-Object Name -Descending | Select-Object -First 1 -ExpandProperty Name`
+3. 将 `work_dirs/<latest>/log.txt` 中 `Git Hash:` 更新为当前 `HEAD`。
+4. 执行提交与推送：
+   - `git add -A`
+   - `git commit -m "backup: sync repo and update latest work_dir git hash"`（若无变更则跳过）
+   - `git push origin main`
+5. 推送后校验：
+   - 比较 `git rev-parse HEAD` 与 `git ls-remote origin refs/heads/main`
+   - 输出“是否一致”的结论。
+6. 禁止在仓库文件中写入或回显 PAT/token；认证仅走本机凭据管理器或 SSH。
