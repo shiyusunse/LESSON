@@ -7,9 +7,11 @@ import hashlib
 import keyword
 import math
 import re
+import shutil
 import subprocess
 import sys
-import tempfile
+import uuid
+from contextlib import contextmanager
 from collections import Counter
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
@@ -22,6 +24,19 @@ _CODE_BLEU_CACHE: Dict[Tuple[str, str], float] = {}
 _BLACK_CACHE: Dict[str, float] = {}
 _SEMGREP_CACHE: Dict[str, float] = {}
 _SEMGREP_AVAILABLE: bool | None = None
+
+
+@contextmanager
+def workspace_temp_dir(prefix: str) -> Path:
+    """在项目目录下创建可写临时目录，规避特定环境下 tempfile 权限问题。"""
+    root = Path.cwd() / ".tmp_runtime"
+    root.mkdir(parents=True, exist_ok=True)
+    temp_dir = root / f"{prefix}_{uuid.uuid4().hex}"
+    temp_dir.mkdir(parents=False, exist_ok=False)
+    try:
+        yield temp_dir
+    finally:
+        shutil.rmtree(temp_dir, ignore_errors=True)
 
 
 def code_hash(source_code: str) -> str:
@@ -148,8 +163,8 @@ def black_diff_count(source_code: str) -> float:
         _BLACK_CACHE[code_digest] = math.nan
         return math.nan
 
-    with tempfile.TemporaryDirectory() as temp_dir:
-        temp_path = Path(temp_dir) / "black_call.py"
+    with workspace_temp_dir("black") as temp_dir:
+        temp_path = temp_dir / "black_call.py"
         temp_path.write_text(source_code, encoding="utf-8")
         result = subprocess.run(
             ["black", str(temp_path), "--diff"],
@@ -191,9 +206,9 @@ def semgrep_issue_count(source_code: str) -> float:
         _SEMGREP_CACHE[code_digest] = math.nan
         return math.nan
 
-    with tempfile.TemporaryDirectory() as temp_dir:
-        temp_path = Path(temp_dir) / "semgrep_call.py"
-        log_path = Path(temp_dir) / "semgrep_log.json"
+    with workspace_temp_dir("semgrep") as temp_dir:
+        temp_path = temp_dir / "semgrep_call.py"
+        log_path = temp_dir / "semgrep_log.json"
         temp_path.write_text(source_code, encoding="utf-8")
         result = subprocess.run(
             [
