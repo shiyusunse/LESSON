@@ -1,183 +1,116 @@
 # LESSON
-short for "Llm-generated codE Self-repair method baSed On causal aNalysis"
 
-# 项目仓库结构
-```
-.
-├── src/                          # LESSON 特征提取代码
-│   ├── run_feature_extraction.py
-│   └── lesson_feature_extractor/
-├── data/                         # 数据集与原始数据
-│   ├── defects4codellm-main/
-│   └── human-eval-master/
-├── work_dirs/                    # 实验运行输出（config/log/features）
-├── CALL-main/                    # 对照/参考项目代码
-├── 课件/                           # 课程材料
-├── CLAUDE.md                     # 项目规范与常用命令
-├── Task.md                       # 当前任务说明
-├── README.md
-├── *.zip                         # 备份/原始压缩包
-└── .idea/                        # IDE 配置
-```
+LESSON = **Llm-generated codE Self-repair method baSed On causal aNalysis**。
 
-# Feature Design
-
-## Model度量
-模型度量：标注是哪个模型输出的错误信息
-
-## Task 复杂度度量
-| No. | Feature | Description |
-| --- | --- | --- |
-| 1 | prompt_len| the number of words in the prompt |
-| 2 | LOC | the length of the correct solution |
-| 3 | ast_nodes | Number of AST nodes of correct solutions|
-
-## Code metrics
-
-| No. | Feature | Description |
-| --- | --- | --- |
-| 1 | pass_rate | The pass rate of test cases. |
-| 2 | run_err_rate | The runtime error rate of test cases. |
-| 3 | syn_err | The number of syntax errors revealed by tree-sitter |
-| 4 | gold_sim_CB | The similarity in CodeBLEU |
-| 5 | gold_sim_B | The similarity in BLEU |
-| 6 | mut_sim_CB | The mutual similarity (in CodeBLEU) among the generated solutions. |
-| 7 | mut_sim_B | The mutual similarity (in BLEU) among the generated solutions. |
-| 8 | timeout_rate | The timeout rate of test cases. |
-| 9 | black_count | The number of places reported by black where PEP8 is violated |
-| 10 | semgrep_count | The number of potential security bugs revealed by Semgrep |
-
-## Code smell metrics
-| No. | Feature | Description |
-| --- | --- | --- |
-| 1 | invalid-name | Count of names that do not follow naming style conventions (Pylint `invalid-name`). |
-| 2 | singleton-comparison | Count of singleton comparisons that should use `is`/`is not` (Pylint `singleton-comparison`). |
-| 3 | unnecessary-lambda-assignment | Count of lambda assignments that can be replaced by direct function references (Pylint `unnecessary-lambda-assignment`). |
-| 4 | non-ascii-name | Count of identifiers containing non-ASCII characters (Pylint `non-ascii-name`). |
-| 5 | disallowed-name | Count of identifiers using disallowed placeholder names (Pylint `disallowed-name`). |
-| 6 | too-many-arguments | Count of function/method definitions with too many parameters (Pylint `too-many-arguments`). |
-| 7 | too-many-nested-blocks | Count of code blocks with excessive nesting depth (Pylint `too-many-nested-blocks`). |
-| 8 | too-many-boolean-expressions | Count of condition expressions with too many boolean clauses (Pylint `too-many-boolean-expressions`). |
-| 9 | consider-merging-isinstance | Count of repeated `isinstance` checks that can be merged (Pylint `consider-merging-isinstance`). |
-| 10 | chained-comparison | Count of boolean chains that should be rewritten as chained comparisons (Pylint `chained-comparison`). |
-| 11 | broad-exception-caught | Count of overly broad exceptions caught in `except` clauses (Pylint `broad-exception-caught`). |
-| 12 | broad-exception-raised | Count of overly broad exceptions raised directly (Pylint `broad-exception-raised`). |
-| 13 | unnecessary-lambda | Count of lambda expressions that can be replaced by existing callables (Pylint `unnecessary-lambda`). |
-
-上述 13 个 Code smell 特征在输出 CSV 中位于 `semgrep_count` 与语义特征 `Aa1` 之间。
-
-## Semantic Errors
-| No. | Feature | Description |
-| --- | --- | --- |
-| 1 | Condition Error - Missing condition |  |
-| 2 | Condition Error - Incorrect condition |  |
-| 3 | Constant Value Error |  |
-| 4 | Reference Error - Wrong method/variable |  |
-| 5 | Reference Error - Undefined name |  |
-| 6 | Operation/Calculation Error - Incorrect arithmetic operation |  |
-| 7 | Operation/Calculation Error - Incorrect comparison operation |  |
-| 8 | Gabrage Code - Only comments |  |
-| 9 | Gabrage Code - Meaningless code snippet |  |
-| 10 | Gabrage Code - Wrong (logical) direction |  |
-| 11 | Incomplete Code/Missing Steps - Missing one step |  |
-| 12 | Incomplete Code/Missing Steps - Missing multiple steps |  |
-| 13 | Memory Error - Infinite loop |  |
-## Syntactic Errors
-| No. | Feature | Description |
-| --- | --- | --- |
-| 1 | Condition Error - If error |  |
-| 2 | Loop Error - For error |  |
-| 3 | Loop Error - While error |  |
-| 4 | Return Error - Incorrect return value |  |
-| 5 | Method Call Error - Incorrect function name |  |
-| 6 | Method Call Error - Incorrect function arguments |  |
-| 7 | Method Call Error - Incorrect method call target |  |
-| 8 | Assignment Error - Incorrect constant |  |
-| 9 | Assignment Error - Incorrect arithmetic |  |
-| 10 | Assignment Error - Incorrect variable name |  |
-| 11 | Assignment Error - Incorrect comparison |  |
-| 12 | Import Error - Import error |  |
-| 13 | Code Block Error - Incorrect code block |  |
-| 14 | Code Block Error - Missing code block |  |
-## Repair Effort
-| No. | Feature | Description |
-| --- | --- | --- |
-| 1 | Levenshtein distance |  |
-| 2 | Jaccard |  |
-| 3 | CodeBERTScore |  |
-
-| No. | Feature | Description |
-| --- | --- | --- |
-| 1 | single-line error |  |
-| 2 | single-hunk error |  |
-| 3 | multi-hunk error |  |
-
-# Data structure
-
-本项目当前使用两类数据：
-1. `defects4codellm-main/data`：按模型划分的错误标注数据（CSV）
-2. `human-eval-master/data`：HumanEval 原始任务与示例数据（JSONL/JSON/Python）
+## 项目结构
 
 ```text
-data/
-├── defects4codellm-main/
-│   └── data/
-│       ├── codegen-humaneval_error.csv
-│       ├── gpt-3.5-humaneval_error.csv
-│       ├── gpt-4-humaneval_error.csv
-│       ├── incoder-humaneval_error.csv
-│       ├── santacoder-humaneval_error.csv
-│       └── starcoder-humaneval_error.csv
-└── human-eval-master/
-    └── data/
-        ├── HumanEval.jsonl/
-        │   └── human-eval-v2-20210705.jsonl
-        ├── HumanEval.jsonl.gz
-        ├── example.json
-        ├── example.py
-        ├── example_problem.jsonl
-        └── example_samples.jsonl
+.
+├── src/
+│   ├── run_feature_extraction.py
+│   └── lesson_feature_extractor/
+├── data/
+│   ├── defects4codellm-main/
+│   └── human-eval-master/
+├── work_dirs/
+├── CALL-main/
+├── 课件/
+└── README.md
 ```
 
-## 1) `defects4codellm-main/data`（错误标注数据）
+## 特征设计
 
-六个 CSV 的字段结构一致：
+### 任务复杂度特征
 
-| Field | Description |
+| No. | Feature | Description |
+| --- | --- | --- |
+| 1 | prompt_len | prompt 词数 |
+| 2 | LOC | 参考解法非空行数 |
+| 3 | ast_nodes | 参考解法 AST 节点数 |
+
+### 代码度量特征
+
+| No. | Feature | Description |
+| --- | --- | --- |
+| 1 | pass_rate | 测试通过率 |
+| 2 | run_err_rate | 运行错误率 |
+| 3 | syn_err | 语法错误标记 |
+| 4 | gold_sim_CB | 与参考解法的 CodeBLEU 相似度 |
+| 5 | gold_sim_B | 与参考解法的 BLEU 相似度 |
+| 6 | mut_sim_CB | 与其他模型输出的平均 CodeBLEU |
+| 7 | mut_sim_B | 与其他模型输出的平均 BLEU |
+| 8 | timeout_rate | 超时率（抽样估计） |
+| 9 | black_count | black 检出的差异块数量 |
+| 10 | semgrep_count | semgrep 检出的潜在安全问题数量 |
+
+### 代码异味特征（Pylint）
+
+| No. | Feature |
 | --- | --- |
-| `Error ID` | 错误样本编号（文件内编号） |
-| `Model` | 生成代码的模型名称 |
-| `Task ID` | HumanEval 任务编号（如 `0`, `1`, `26`） |
-| `Semantic Characteristics` | 语义错误标签（如 `Aa2`, `Ae3`） |
-| `Syntactic Characteristics` | 语法错误标签（如 `Ba1`, `Bg2`） |
-| `Incorrect Code (Complete)` | 模型生成的错误代码全文 |
-| `Ground Truth Code (Complete)` | 对应任务的参考正确代码全文 |
+| 1 | invalid-name |
+| 2 | singleton-comparison |
+| 3 | unnecessary-lambda-assignment |
+| 4 | non-ascii-name |
+| 5 | disallowed-name |
+| 6 | too-many-arguments |
+| 7 | too-many-nested-blocks |
+| 8 | too-many-boolean-expressions |
+| 9 | consider-merging-isinstance |
+| 10 | chained-comparison |
+| 11 | broad-exception-caught |
+| 12 | broad-exception-raised |
+| 13 | unnecessary-lambda |
 
-文件规模（行数）：
+这 13 个异味特征在输出 CSV 中位于 `semgrep_count` 与语义特征 `Aa1` 之间。
 
-| File | Rows |
-| --- | ---: |
-| `codegen-humaneval_error.csv` | 129 |
-| `gpt-3.5-humaneval_error.csv` | 52 |
-| `gpt-4-humaneval_error.csv` | 20 |
-| `incoder-humaneval_error.csv` | 182 |
-| `santacoder-humaneval_error.csv` | 181 |
-| `starcoder-humaneval_error.csv` | 123 |
-| **Total** | **687** |
+### 语义与语法 one-hot 特征
 
-## 2) `human-eval-master/data`（原始任务数据）
+- 语义特征列：`Aa1` ~ `Ag1`
+- 语法特征列：`Ba1` ~ `Bg2`
 
-核心文件：`HumanEval.jsonl/human-eval-v2-20210705.jsonl`。  
-该文件每行是一个 JSON 对象，包含以下键：
+## 数据来源
 
-| Key | Description |
-| --- | --- |
-| `task_id` | 任务标识（如 `HumanEval/0`） |
-| `prompt` | 题目描述与函数签名 |
-| `entry_point` | 待实现函数名 |
-| `canonical_solution` | 官方参考实现 |
-| `test` | 任务测试代码 |
+- `data/defects4codellm-main/data`：按模型拆分的错误标注 CSV。
+- `data/defects4codellm-main/website/src/data`：模型代码、测试结果、测试输入等 JSON。
+- `data/human-eval-master/data/HumanEval.jsonl/human-eval-v2-20210705.jsonl`：HumanEval 原始任务。
 
-补充说明：
-- `*_humaneval_error.csv` 中的 `Task ID` 与 `HumanEval` 的 `task_id` 后缀一一对应（例如 `Task ID = 0` 对应 `HumanEval/0`）。
-- `example.json`、`example_problem.jsonl`、`example_samples.jsonl`、`example.py` 为示例数据与示例代码，用于快速理解数据格式与评测流程。
+## 运行方式
+
+在项目根目录执行：
+
+```bash
+python src/run_feature_extraction.py
+```
+
+常用参数：
+
+- `--run-name`：指定输出目录名。
+- `--models`：指定模型列表（逗号分隔）。
+- `--encoding`：文件编码（默认 `utf-8`）。
+
+## 输出结构
+
+每次运行会生成：
+
+```text
+work_dirs/<run_name>/
+├── config.yaml
+├── log.txt
+└── outputs/
+    ├── codegen_16b_features.csv
+    ├── incoder_1b_features.csv
+    ├── gpt_3_5_features.csv
+    ├── gpt_4_features.csv
+    ├── santacoder_features.csv
+    └── starcoder_features.csv
+```
+
+## 依赖说明
+
+- `pylint`：用于计算 13 个 code smell 特征。
+- `semgrep`：用于计算 `semgrep_count`。
+
+当前实现具备回退策略：
+
+- `semgrep` 不可用或执行失败时，`semgrep_count` 回退为 `0.0`。
+- `pylint` 不可用时，code smell 特征会写空值。

@@ -78,7 +78,7 @@ def build_run_name(cli_run_name: str) -> str:
 
 
 def write_log_header(log_path: Path, args: argparse.Namespace, run_config: Dict[str, str]) -> None:
-    """写入日志头。"""
+    """写入日志头信息。"""
     command = " ".join(sys.argv)
     python_version = platform.python_version()
     git_hash = get_git_hash()
@@ -149,4 +149,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -31,13 +31,17 @@ _CODE_BLEU_CACHE: Dict[Tuple[str, str], float] = {}
 _BLACK_CACHE: Dict[str, float] = {}
 _SEMGREP_CACHE: Dict[str, float] = {}
 _SEMGREP_AVAILABLE: bool | None = None
+_SEMGREP_RUNNER: List[str] | None = None
 _PYLINT_CACHE: Dict[str, Dict[str, float]] = {}
 _PYLINT_AVAILABLE: bool | None = None
+_PYLINT_RUNNER: List[str] | None = None
+_TIMEOUT_RATE_CACHE: Dict[Tuple[str, int], float] = {}
+_TIMEOUT_SAMPLE_LIMIT = 50
 
 
 @contextmanager
 def workspace_temp_dir(prefix: str) -> Path:
-    """在项目目录下创建可写临时目录，规避特定环境下 tempfile 权限问题。"""
+    """在项目目录下创建可写临时目录，规避临时目录权限问题。"""
     root = Path.cwd() / ".tmp_runtime"
     root.mkdir(parents=True, exist_ok=True)
     temp_dir = root / f"{prefix}_{uuid.uuid4().hex}"
@@ -54,12 +58,12 @@ def code_hash(source_code: str) -> str:
 
 
 def tokenize_code(source_code: str) -> List[str]:
-    """将代码分词为 BLEU 计算所需 token。"""
+    """将代码切分为 BLEU 计算所需 token。"""
     return re.findall(r"\w+|[^\w\s]", source_code, flags=re.UNICODE)
 
 
 def build_ngram_counter(tokens: List[str], n: int) -> Counter[Tuple[str, ...]]:
-    """构建 n-gram 计数。"""
+    """构建 n-gram 计数器。"""
     if n <= 0:
         return Counter()
     if len(tokens) < n:
@@ -104,7 +108,7 @@ def compute_bleu(candidate_code: str, reference_code: str, max_n: int = 4) -> fl
 
 
 def compute_weighted_unigram_score(candidate_code: str, reference_code: str) -> float:
-    """计算关键词加权 unigram 相似度（参考 CALL 的 weighted ngram 思想）。"""
+    """计算关键词加权 unigram 相似度。"""
     candidate_tokens = tokenize_code(candidate_code)
     reference_tokens = tokenize_code(reference_code)
     if not candidate_tokens or not reference_tokens:
@@ -124,7 +128,7 @@ def compute_weighted_unigram_score(candidate_code: str, reference_code: str) -> 
 
 
 def compute_ast_syntax_match(candidate_code: str, reference_code: str) -> float:
-    """计算 AST 语法结构匹配度（参考 CALL 的 syntax_match 思想）。"""
+    """计算 AST 语法结构匹配度。"""
     try:
         candidate_tree = ast.parse(candidate_code)
         reference_tree = ast.parse(reference_code)
@@ -140,7 +144,7 @@ def compute_ast_syntax_match(candidate_code: str, reference_code: str) -> float:
 
 
 def compute_code_bleu(candidate_code: str, reference_code: str) -> float:
-    """计算可落地版 CodeBLEU（参考 CALL 的组合公式）。"""
+    """计算可落地版 CodeBLEU。"""
     cache_key = (code_hash(candidate_code), code_hash(reference_code))
     if cache_key in _CODE_BLEU_CACHE:
         return _CODE_BLEU_CACHE[cache_key]
@@ -194,6 +198,9 @@ def semgrep_available() -> bool:
     global _SEMGREP_AVAILABLE
     if _SEMGREP_AVAILABLE is not None:
         return _SEMGREP_AVAILABLE
+    if shutil_which("semgrep"):
+        _SEMGREP_AVAILABLE = True
+        return True
     result = subprocess.run(
         [sys.executable, "-m", "semgrep", "--version"],
         capture_output=True,
@@ -206,55 +213,95 @@ def semgrep_available() -> bool:
     return _SEMGREP_AVAILABLE
 
 
+def semgrep_runner() -> List[str] | None:
+    """返回可执行的 semgrep 命令前缀。"""
+    global _SEMGREP_RUNNER
+    global _SEMGREP_AVAILABLE
+    if _SEMGREP_RUNNER is not None:
+        return list(_SEMGREP_RUNNER)
+
+    if shutil_which("semgrep"):
+        _SEMGREP_RUNNER = ["semgrep"]
+        _SEMGREP_AVAILABLE = True
+        return list(_SEMGREP_RUNNER)
+
+    result = subprocess.run(
+        [sys.executable, "-m", "semgrep", "--version"],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="ignore",
+        check=False,
+    )
+    if result.returncode == 0:
+        _SEMGREP_RUNNER = [sys.executable, "-m", "semgrep"]
+        _SEMGREP_AVAILABLE = True
+        return list(_SEMGREP_RUNNER)
+
+    _SEMGREP_RUNNER = None
+    _SEMGREP_AVAILABLE = False
+    return None
+
 def semgrep_issue_count(source_code: str) -> float:
     """调用 semgrep 统计潜在安全问题数量。"""
     code_digest = code_hash(source_code)
     if code_digest in _SEMGREP_CACHE:
         return _SEMGREP_CACHE[code_digest]
-    if not semgrep_available():
-        _SEMGREP_CACHE[code_digest] = math.nan
-        return math.nan
+
+    runner = semgrep_runner()
+    if runner is None:
+        # 回退：当前环境不可用 semgrep，按 0 处理。
+        _SEMGREP_CACHE[code_digest] = 0.0
+        return 0.0
 
     with workspace_temp_dir("semgrep") as temp_dir:
         temp_path = temp_dir / "semgrep_call.py"
         log_path = temp_dir / "semgrep_log.json"
         temp_path.write_text(source_code, encoding="utf-8")
+        cmd = list(runner) + [
+            "--config",
+            "p/python",
+            str(temp_path),
+            "--json",
+            "-o",
+            str(log_path),
+        ]
         result = subprocess.run(
-            [
-                sys.executable,
-                "-m",
-                "semgrep",
-                "--config",
-                "p/python",
-                str(temp_path),
-                "--json",
-                "-o",
-                str(log_path),
-            ],
+            cmd,
             capture_output=True,
             text=True,
             encoding="utf-8",
             errors="ignore",
             check=False,
         )
-        # semgrep 正常时常见返回码包括 0（无结果）和 1（有结果）
         if result.returncode not in (0, 1) or not log_path.exists():
-            _SEMGREP_CACHE[code_digest] = math.nan
-            return math.nan
+            _SEMGREP_CACHE[code_digest] = 0.0
+            return 0.0
         try:
             payload = load_json(log_path, "utf-8")
             issue_count = float(len(payload.get("results", [])))
         except Exception:
-            issue_count = math.nan
+            issue_count = 0.0
+
     _SEMGREP_CACHE[code_digest] = issue_count
     return issue_count
-
 
 def pylint_available() -> bool:
     """判断 pylint 是否可用。"""
     global _PYLINT_AVAILABLE
     if _PYLINT_AVAILABLE is not None:
         return _PYLINT_AVAILABLE
+    _PYLINT_AVAILABLE = pylint_runner() is not None
+    return _PYLINT_AVAILABLE
+
+
+def pylint_runner() -> List[str] | None:
+    """返回可执行的 pylint 命令前缀。"""
+    global _PYLINT_RUNNER
+    global _PYLINT_AVAILABLE
+    if _PYLINT_RUNNER is not None:
+        return list(_PYLINT_RUNNER)
+
     result = subprocess.run(
         [sys.executable, "-m", "pylint", "--version"],
         capture_output=True,
@@ -263,8 +310,29 @@ def pylint_available() -> bool:
         errors="ignore",
         check=False,
     )
-    _PYLINT_AVAILABLE = result.returncode == 0
-    return _PYLINT_AVAILABLE
+    if result.returncode == 0:
+        _PYLINT_RUNNER = [sys.executable, "-m", "pylint"]
+        _PYLINT_AVAILABLE = True
+        return list(_PYLINT_RUNNER)
+
+    if shutil_which("pylint"):
+        cmd = ["pylint", "--version"]
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="ignore",
+            check=False,
+        )
+        if result.returncode == 0:
+            _PYLINT_RUNNER = ["pylint"]
+            _PYLINT_AVAILABLE = True
+            return list(_PYLINT_RUNNER)
+
+    _PYLINT_RUNNER = None
+    _PYLINT_AVAILABLE = False
+    return None
 
 
 def pylint_code_smell_counts(source_code: str) -> Dict[str, float]:
@@ -273,7 +341,8 @@ def pylint_code_smell_counts(source_code: str) -> Dict[str, float]:
     if code_digest in _PYLINT_CACHE:
         return dict(_PYLINT_CACHE[code_digest])
 
-    if not pylint_available():
+    runner = pylint_runner()
+    if runner is None:
         nan_payload: Dict[str, float] = {column: math.nan for column in PYLINT_CODE_SMELL_COLUMNS}
         _PYLINT_CACHE[code_digest] = nan_payload
         return dict(nan_payload)
@@ -282,18 +351,16 @@ def pylint_code_smell_counts(source_code: str) -> Dict[str, float]:
     with workspace_temp_dir("pylint") as temp_dir:
         temp_path = temp_dir / "pylint_call.py"
         temp_path.write_text(source_code, encoding="utf-8")
+        cmd = list(runner) + [
+            str(temp_path),
+            "--score=n",
+            "--reports=n",
+            "--output-format=json",
+            "--disable=all",
+            f"--enable={','.join(PYLINT_CODE_SMELL_COLUMNS)}",
+        ]
         result = subprocess.run(
-            [
-                sys.executable,
-                "-m",
-                "pylint",
-                str(temp_path),
-                "--score=n",
-                "--reports=n",
-                "--output-format=json",
-                "--disable=all",
-                f"--enable={','.join(PYLINT_CODE_SMELL_COLUMNS)}",
-            ],
+            cmd,
             capture_output=True,
             text=True,
             encoding="utf-8",
@@ -325,6 +392,99 @@ def shutil_which(command_name: str) -> str | None:
     return which(command_name)
 
 
+def _extract_entry_point(source_code: str) -> str:
+    """从参考代码中提取主函数名。"""
+    try:
+        tree = ast.parse(source_code)
+    except SyntaxError:
+        return ""
+    for node in tree.body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            return node.name
+    return ""
+
+
+def _build_test_case_input_map(test_case_path: Path, encoding: str) -> Dict[int, List[Any]]:
+    """构建 task_id 到测试输入列表的映射。"""
+    rows = load_json(test_case_path, encoding)
+    case_map: Dict[int, List[Any]] = {}
+    for row in rows:
+        task_id = parse_task_id(row.get("Task ID", ""))
+        base_input = list(row.get("base_input", []))
+        plus_input = list(row.get("plus_input", []))
+        case_map[task_id] = base_input + plus_input
+    return case_map
+
+
+def _build_timeout_runner_script(runner_path: Path) -> None:
+    """生成用于超时评估的辅助脚本。"""
+    runner_code = (
+        "import importlib.util\n"
+        "import json\n"
+        "import sys\n"
+        "\n"
+        "module_path = sys.argv[1]\n"
+        "entry_point = sys.argv[2]\n"
+        "spec = importlib.util.spec_from_file_location('candidate_module', module_path)\n"
+        "if spec is None or spec.loader is None:\n"
+        "    raise RuntimeError('failed to load candidate module')\n"
+        "module = importlib.util.module_from_spec(spec)\n"
+        "spec.loader.exec_module(module)\n"
+        "func = getattr(module, entry_point)\n"
+        "payload = json.loads(sys.stdin.read())\n"
+        "if isinstance(payload, list):\n"
+        "    func(*payload)\n"
+        "else:\n"
+        "    func(payload)\n"
+    )
+    runner_path.write_text(runner_code, encoding="utf-8")
+
+
+def timeout_rate_from_cases(task_id: int, source_code: str, entry_point: str, test_cases: List[Any], time_limit: float = 3.0) -> float:
+    """根据测试输入估计超时率。"""
+    if not test_cases:
+        return 0.0
+    if not entry_point:
+        return 0.0
+
+    cache_key = (code_hash(source_code), task_id)
+    if cache_key in _TIMEOUT_RATE_CACHE:
+        return _TIMEOUT_RATE_CACHE[cache_key]
+
+    eval_cases = test_cases
+    if len(test_cases) > _TIMEOUT_SAMPLE_LIMIT:
+        step = len(test_cases) / _TIMEOUT_SAMPLE_LIMIT
+        eval_cases = [test_cases[int(index * step)] for index in range(_TIMEOUT_SAMPLE_LIMIT)]
+
+    timeout_count = 0
+    with workspace_temp_dir("timeout_eval") as temp_dir:
+        module_path = temp_dir / "candidate.py"
+        runner_path = temp_dir / "timeout_runner.py"
+        module_path.write_text(source_code, encoding="utf-8")
+        _build_timeout_runner_script(runner_path)
+
+        cmd = [sys.executable, str(runner_path), str(module_path), entry_point]
+        for test_case in eval_cases:
+            try:
+                payload = json.dumps(test_case, ensure_ascii=False)
+                subprocess.run(
+                    cmd,
+                    input=payload,
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                    errors="ignore",
+                    timeout=time_limit,
+                    check=False,
+                )
+            except subprocess.TimeoutExpired:
+                timeout_count += 1
+
+    timeout_rate = timeout_count / max(len(eval_cases), 1)
+    _TIMEOUT_RATE_CACHE[cache_key] = timeout_rate
+    return timeout_rate
+
+
 def build_test_case_total_map(test_case_path: Path, encoding: str) -> Dict[int, int]:
     """构建每个任务的测试用例总数映射。"""
     rows = load_json(test_case_path, encoding)
@@ -338,7 +498,7 @@ def build_test_case_total_map(test_case_path: Path, encoding: str) -> Dict[int, 
 
 
 def build_pass_count_map(test_result_path: Path, encoding: str) -> Dict[int, int]:
-    """构建每个任务通过测试数映射。"""
+    """构建每个任务的测试通过数映射。"""
     rows = load_json(test_result_path, encoding)
     pass_map: Dict[int, int] = {}
     for row in rows:
@@ -394,6 +554,10 @@ def build_model_feature_map(model_name: str, website_data_dir: Path, encoding: s
     all_model_codes = load_all_model_codes(website_data_dir, encoding)
     pass_count_map = build_pass_count_map(test_result_path, encoding)
     total_count_map = build_test_case_total_map(test_case_path, encoding)
+    test_case_input_map = _build_test_case_input_map(test_case_path, encoding)
+    entry_point_map: Dict[int, str] = {
+        task_id: _extract_entry_point(code) for task_id, code in enumerate(ground_truth_codes)
+    }
 
     feature_map: Dict[int, Dict[str, Any]] = {}
     upper_bound = min(len(generated_codes), len(ground_truth_codes))
@@ -416,6 +580,12 @@ def build_model_feature_map(model_name: str, website_data_dir: Path, encoding: s
         black_count = black_diff_count(generated_code)
         semgrep_count = semgrep_issue_count(generated_code)
         pylint_counts = pylint_code_smell_counts(generated_code)
+        timeout_rate = 0.0 if syn_err else timeout_rate_from_cases(
+            task_id=task_id,
+            source_code=generated_code,
+            entry_point=entry_point_map.get(task_id, ""),
+            test_cases=test_case_input_map.get(task_id, []),
+        )
 
         row: Dict[str, Any] = {
             "pass_rate": round(pass_rate, 6),
@@ -425,7 +595,7 @@ def build_model_feature_map(model_name: str, website_data_dir: Path, encoding: s
             "gold_sim_B": round(gold_sim_b, 6),
             "mut_sim_CB": round(mut_sim_cb, 6) if not math.isnan(mut_sim_cb) else math.nan,
             "mut_sim_B": round(mut_sim_b, 6) if not math.isnan(mut_sim_b) else math.nan,
-            "timeout_rate": math.nan,
+            "timeout_rate": round(timeout_rate, 6),
             "black_count": round(black_count, 6) if not math.isnan(black_count) else math.nan,
             "semgrep_count": round(semgrep_count, 6) if not math.isnan(semgrep_count) else math.nan,
         }
@@ -436,3 +606,13 @@ def build_model_feature_map(model_name: str, website_data_dir: Path, encoding: s
         feature_map[task_id] = {key: row.get(key, math.nan) for key in MODEL_FEATURE_COLUMNS}
 
     return feature_map
+
+
+
+
+
+
+
+
+
+

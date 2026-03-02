@@ -12,7 +12,7 @@ from .utils import load_jsonl, parse_task_id
 
 
 def count_prompt_words(prompt: str) -> int:
-    """统计 prompt 的单词数。"""
+    """统计 prompt 的词数。"""
     return len(re.findall(r"\S+", prompt))
 
 
@@ -22,7 +22,7 @@ def count_loc(source_code: str) -> int:
 
 
 def count_ast_nodes(source_code: str) -> int:
-    """统计 AST 节点数。"""
+    """统计 AST 节点总数。"""
     try:
         tree = ast.parse(source_code)
     except SyntaxError:
@@ -45,4 +45,3 @@ def build_task_feature_map(humaneval_jsonl_path: Path, encoding: str) -> Dict[in
             TASK_FEATURE_COLUMNS[2]: count_ast_nodes(full_correct_code),
         }
     return task_feature_map
-

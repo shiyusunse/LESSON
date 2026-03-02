@@ -116,7 +116,7 @@ def get_git_hash() -> str:
 
 
 def write_simple_yaml(path: Path, data: Mapping[str, Any], encoding: str) -> None:
-    """写入简易 YAML 配置文件。"""
+    """写入简单 YAML 配置文件。"""
     lines: List[str] = []
     for key, value in data.items():
         if isinstance(value, list):
