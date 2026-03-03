@@ -131,7 +131,12 @@ def main() -> None:
     log_path = run_dir / "log.txt"
     write_log_header(log_path, args, run_config)
 
-    task_feature_map = build_task_feature_map(Path(args.humaneval_jsonl_path), args.encoding)
+    task_feature_map = build_task_feature_map(
+        humaneval_jsonl_path=Path(args.humaneval_jsonl_path),
+        defects_data_dir=Path(args.defects_data_dir),
+        models=list(MODEL_TO_FILES.keys()),
+        encoding=args.encoding,
+    )
     summary = run_feature_pipeline(
         defects_data_dir=Path(args.defects_data_dir),
         website_data_dir=Path(args.website_data_dir),

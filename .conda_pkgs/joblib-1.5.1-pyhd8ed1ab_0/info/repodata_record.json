@@ -1,0 +1,22 @@
+{
+  "build": "pyhd8ed1ab_0",
+  "build_number": 0,
+  "channel": "<unknown>",
+  "constrains": [],
+  "depends": [
+    "python >=3.9",
+    "setuptools"
+  ],
+  "fn": "joblib-1.5.1-pyhd8ed1ab_0.conda",
+  "license": "BSD-3-Clause",
+  "md5": "fb1c14694de51a476ce8636d92b6f42c",
+  "name": "joblib",
+  "noarch": "python",
+  "package_type": "noarch_python",
+  "sha256": "e5a4eca9a5d8adfaa3d51e24eefd1a6d560cb3b33a7e1eee13e410bec457b7ed",
+  "size": 224437,
+  "subdir": "noarch",
+  "timestamp": 1748019237972,
+  "url": "file:///E:/Anaconda/pkgs/joblib-1.5.1-pyhd8ed1ab_0.conda",
+  "version": "1.5.1"
+}

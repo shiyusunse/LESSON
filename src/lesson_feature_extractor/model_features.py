@@ -19,6 +19,7 @@ from typing import Any, Dict, List, Tuple
 
 from .constants import (
     GT_CODE_JSON,
+    HUMAN_EVAL_FAILED_JSON,
     MODEL_FEATURE_COLUMNS,
     MODEL_TO_FILES,
     PYLINT_CODE_SMELL_COLUMNS,
@@ -497,6 +498,21 @@ def build_test_case_total_map(test_case_path: Path, encoding: str) -> Dict[int, 
     return total_map
 
 
+def load_model_fail_count(failed_json_path: Path, model_name: str, encoding: str) -> int:
+    """从 HumanEvalFailed.json 读取指定模型的失败任务数。"""
+    payload = load_json(failed_json_path, encoding)
+    if not isinstance(payload, dict):
+        raise ValueError("HumanEvalFailed.json format invalid: expected top-level object.")
+    if model_name not in payload:
+        raise ValueError(f"Model '{model_name}' not found in HumanEvalFailed.json.")
+
+    failed_tasks = payload.get(model_name, [])
+    if not isinstance(failed_tasks, list):
+        raise ValueError(f"Model '{model_name}' value in HumanEvalFailed.json must be a list.")
+    normalized = {int(task_id) for task_id in failed_tasks}
+    return len(normalized)
+
+
 def build_pass_count_map(test_result_path: Path, encoding: str) -> Dict[int, int]:
     """构建每个任务的测试通过数映射。"""
     rows = load_json(test_result_path, encoding)
@@ -545,16 +561,18 @@ def build_model_feature_map(model_name: str, website_data_dir: Path, encoding: s
     """构建 task_id 到模型特征的映射。"""
     model_files = MODEL_TO_FILES[model_name]
     code_path = website_data_dir / model_files["code_json"]
-    test_result_path = website_data_dir / model_files["test_json"]
     gt_path = website_data_dir / GT_CODE_JSON
     test_case_path = website_data_dir / TEST_CASE_JSON
+    failed_task_path = website_data_dir / HUMAN_EVAL_FAILED_JSON
 
     generated_codes: List[str] = [str(code) for code in load_json(code_path, encoding)]
     ground_truth_codes: List[str] = [str(code) for code in load_json(gt_path, encoding)]
     all_model_codes = load_all_model_codes(website_data_dir, encoding)
-    pass_count_map = build_pass_count_map(test_result_path, encoding)
-    total_count_map = build_test_case_total_map(test_case_path, encoding)
     test_case_input_map = _build_test_case_input_map(test_case_path, encoding)
+    fail_count = load_model_fail_count(failed_task_path, model_name, encoding)
+    total_count = 164
+    run_err_rate = fail_count / total_count
+    pass_rate = 1.0 - run_err_rate
     entry_point_map: Dict[int, str] = {
         task_id: _extract_entry_point(code) for task_id, code in enumerate(ground_truth_codes)
     }
@@ -564,10 +582,6 @@ def build_model_feature_map(model_name: str, website_data_dir: Path, encoding: s
     for task_id in range(upper_bound):
         generated_code = generated_codes[task_id]
         ground_truth_code = ground_truth_codes[task_id]
-        pass_count = pass_count_map.get(task_id, 0)
-        total_count = total_count_map.get(task_id, 0)
-        pass_rate = (pass_count / total_count) if total_count > 0 else 0.0
-        run_err_rate = max(0.0, 1.0 - pass_rate)
         syn_err = 1 if has_syntax_error(generated_code) else 0
         gold_sim_b = compute_bleu(generated_code, ground_truth_code)
         gold_sim_cb = compute_code_bleu(generated_code, ground_truth_code)

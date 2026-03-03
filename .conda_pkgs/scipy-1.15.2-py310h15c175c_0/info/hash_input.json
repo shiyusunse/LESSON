@@ -1,0 +1,15 @@
+{
+  "libblas": "3.9.* *netlib",
+  "libcblas": "3.9.* *netlib",
+  "target_platform": "win-64",
+  "channel_targets": "conda-forge main",
+  "fortran_compiler_version": "19",
+  "liblapack": "3.9.* *netlib",
+  "cxx_compiler": "vs2019",
+  "c_stdlib": "vs",
+  "ace": "8.0.2",
+  "numpy": "2.0",
+  "c_compiler": "vs2019",
+  "python": "3.10.* *_cpython",
+  "fortran_compiler": "flang"
+}

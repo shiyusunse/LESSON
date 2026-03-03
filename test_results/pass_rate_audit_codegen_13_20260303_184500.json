@@ -1,0 +1,142 @@
+{
+  "input": {
+    "model": "CodeGen-16B",
+    "error_id": "13",
+    "task_id": 26,
+    "defects_data_dir": "data\\defects4codellm-main\\data",
+    "website_data_dir": "data\\defects4codellm-main\\website\\src\\data",
+    "error_csv_path": "data\\defects4codellm-main\\data\\codegen-humaneval_error.csv",
+    "model_test_json_path": "data\\defects4codellm-main\\website\\src\\data\\codegen_test.json",
+    "testcase_json_path": "data\\defects4codellm-main\\website\\src\\data\\HumanEvalPlus-test.json",
+    "human_eval_failed_json_path": "data\\defects4codellm-main\\website\\src\\data\\HumanEvalFailed.json"
+  },
+  "formula": {
+    "pass_rate": "1 - fail_count / total_count",
+    "run_err_rate": "fail_count / total_count",
+    "total_count": "fixed 164"
+  },
+  "process": {
+    "fail_count_from_human_eval_failed_json": 110,
+    "total_count_fixed": 164,
+    "pass_count_from_test_json_for_semantics_check": "len(base)+len(plus) -> 851",
+    "target_row_base_count": 1,
+    "target_row_plus_count": 850
+  },
+  "result": {
+    "fail_count": 110,
+    "pass_count": 851,
+    "total_count": 164,
+    "pass_rate": 0.329268,
+    "run_err_rate": 0.670732,
+    "formula_check_passed": true
+  },
+  "base_plus_semantics_check": {
+    "sample_size": 30,
+    "conclusion": "base_plus_store_passed_cases",
+    "confidence": "high",
+    "reason": "抽查到 error 样本对应任务的 pass_count=0 且 total_count>0。若 base/plus 表示未通过样例，则该任务未通过数应为 0，与 error 样本语义冲突。",
+    "checked_rows_preview": [
+      {
+        "error_id": "1",
+        "task_id": 1,
+        "pass_count": 1004,
+        "total_count": 1004,
+        "pass_rate": 1.0,
+        "run_err_rate_if_pass_semantics": 0.0,
+        "run_err_rate_if_fail_semantics": 1.0
+      },
+      {
+        "error_id": "2",
+        "task_id": 3,
+        "pass_count": 222,
+        "total_count": 905,
+        "pass_rate": 0.245304,
+        "run_err_rate_if_pass_semantics": 0.754696,
+        "run_err_rate_if_fail_semantics": 0.245304
+      },
+      {
+        "error_id": "3",
+        "task_id": 5,
+        "pass_count": 154,
+        "total_count": 156,
+        "pass_rate": 0.987179,
+        "run_err_rate_if_pass_semantics": 0.012821,
+        "run_err_rate_if_fail_semantics": 0.987179
+      },
+      {
+        "error_id": "4",
+        "task_id": 6,
+        "pass_count": 1003,
+        "total_count": 1003,
+        "pass_rate": 1.0,
+        "run_err_rate_if_pass_semantics": 0.0,
+        "run_err_rate_if_fail_semantics": 1.0
+      },
+      {
+        "error_id": "5",
+        "task_id": 10,
+        "pass_count": 732,
+        "total_count": 785,
+        "pass_rate": 0.932484,
+        "run_err_rate_if_pass_semantics": 0.067516,
+        "run_err_rate_if_fail_semantics": 0.932484
+      },
+      {
+        "error_id": "6",
+        "task_id": 17,
+        "pass_count": 219,
+        "total_count": 220,
+        "pass_rate": 0.995455,
+        "run_err_rate_if_pass_semantics": 0.004545,
+        "run_err_rate_if_fail_semantics": 0.995455
+      },
+      {
+        "error_id": "7",
+        "task_id": 17,
+        "pass_count": 219,
+        "total_count": 220,
+        "pass_rate": 0.995455,
+        "run_err_rate_if_pass_semantics": 0.004545,
+        "run_err_rate_if_fail_semantics": 0.995455
+      },
+      {
+        "error_id": "8",
+        "task_id": 19,
+        "pass_count": 131,
+        "total_count": 133,
+        "pass_rate": 0.984962,
+        "run_err_rate_if_pass_semantics": 0.015038,
+        "run_err_rate_if_fail_semantics": 0.984962
+      },
+      {
+        "error_id": "9",
+        "task_id": 20,
+        "pass_count": 996,
+        "total_count": 1005,
+        "pass_rate": 0.991045,
+        "run_err_rate_if_pass_semantics": 0.008955,
+        "run_err_rate_if_fail_semantics": 0.991045
+      },
+      {
+        "error_id": "11",
+        "task_id": 24,
+        "pass_count": 138,
+        "total_count": 173,
+        "pass_rate": 0.797688,
+        "run_err_rate_if_pass_semantics": 0.202312,
+        "run_err_rate_if_fail_semantics": 0.797688
+      }
+    ],
+    "zero_pass_examples_preview": [
+      {
+        "error_id": "17",
+        "task_id": 32,
+        "pass_count": 0,
+        "total_count": 928,
+        "pass_rate": 0.0,
+        "run_err_rate_if_pass_semantics": 1.0,
+        "run_err_rate_if_fail_semantics": 0.0
+      }
+    ]
+  }
+}

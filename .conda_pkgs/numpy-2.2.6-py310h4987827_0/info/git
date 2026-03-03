@@ -1,0 +1,95 @@
+==> D:\Miniforge\Library\usr\bin\git.exe log -n1 <==
+commit 0b696633f9ad89497dd5532b55eaa01625ad71ca
+Author: Jan Wassenberg <janwas@google.com>
+Date:   Wed Jan 22 09:36:45 2025 -0800
+
+    fix incompatibility with Windows macro, fixes #2450, thanks @scuzqy
+    
+    PiperOrigin-RevId: 718419557
+==> D:\Miniforge\Library\usr\bin\git.exe describe --tags --dirty <==
+1.2.0-208-g0b696633
+==> D:\Miniforge\Library\usr\bin\git.exe status <==
+HEAD detached at 0b696633
+nothing to commit, working tree clean
+==> D:\Miniforge\Library\usr\bin\git.exe log -n1 <==
+commit 0f1d42a10a3f594ad48894912396df31b2c2d55d
+Author: Matti Picus <matti.picus@gmail.com>
+Date:   Tue Nov 19 10:09:30 2024 +0200
+
+    prepare for pypy3.11 release (#123)
+==> D:\Miniforge\Library\usr\bin\git.exe describe --tags --dirty <==
+commit 0f1d42a10a3f594ad48894912396df31b2c2d55d
+Author: Matti Picus <matti.picus@gmail.com>
+Date:   Tue Nov 19 10:09:30 2024 +0200
+
+    prepare for pypy3.11 release (#123)
+==> D:\Miniforge\Library\usr\bin\git.exe status <==
+HEAD detached at 0f1d42a
+nothing to commit, working tree clean
+==> D:\Miniforge\Library\usr\bin\git.exe log -n1 <==
+commit 9a1b616d5cd4eaf49f7664fb86ccc1d18bad2b8d
+Merge: 33a4a1d 3bb9296
+Author: Raghuveer Devulapalli <raghuveer.devulapalli@intel.com>
+Date:   Fri Jun 21 13:36:06 2024 -0700
+
+    Merge pull request #157 from ron-at-swgy/main
+    
+    Add flags to support OpenBSD
+==> D:\Miniforge\Library\usr\bin\git.exe describe --tags --dirty <==
+v5.0-96-g9a1b616
+==> D:\Miniforge\Library\usr\bin\git.exe status <==
+HEAD detached at 9a1b616
+nothing to commit, working tree clean
+==> D:\Miniforge\Library\usr\bin\git.exe log -n1 <==
+commit 32bf2a98420762a63ab418aaa0a7d6e17eb9627a
+Merge: 958caea 562d12a
+Author: Raghuveer Devulapalli <raghuveer.devulapalli@intel.com>
+Date:   Thu Jan 18 09:52:39 2024 -0800
+
+    Merge pull request #6 from r-devulap/rename
+    
+    Rename ln_h_la.s to log_h_la.s
+==> D:\Miniforge\Library\usr\bin\git.exe describe --tags --dirty <==
+commit 32bf2a98420762a63ab418aaa0a7d6e17eb9627a
+Merge: 958caea 562d12a
+Author: Raghuveer Devulapalli <raghuveer.devulapalli@intel.com>
+Date:   Thu Jan 18 09:52:39 2024 -0800
+
+    Merge pull request #6 from r-devulap/rename
+    
+    Rename ln_h_la.s to log_h_la.s
+==> D:\Miniforge\Library\usr\bin\git.exe status <==
+HEAD detached at 32bf2a9
+nothing to commit, working tree clean
+==> D:\Miniforge\Library\usr\bin\git.exe log -n1 <==
+commit 33ae5dc94c9cdc7f1c78346504a85de87cadaa12
+Author: Martin Reinecke <martin@mpa-garching.mpg.de>
+Date:   Fri Mar 22 10:53:05 2024 +0100
+
+    unconditionaly disable use of aligned_alloc
+==> D:\Miniforge\Library\usr\bin\git.exe describe --tags --dirty <==
+release_for_eigen-24-g33ae5dc
+==> D:\Miniforge\Library\usr\bin\git.exe status <==
+HEAD detached at 33ae5dc
+nothing to commit, working tree clean
+==> D:\Miniforge\Library\usr\bin\git.exe log -n1 <==
+commit 0d93515fb826440d19707eee47fd92655fe2f166
+Merge: 3f28c5408 4ee834f68
+Author: Ralf Gommers <ralf.gommers@gmail.com>
+Date:   Tue Oct 15 09:23:00 2024 +0200
+
+    Merge pull request #17 from rgommers/aix-linker-issue
+    
+    linkers: Fix linker detection with clang on Solaris
+==> D:\Miniforge\Library\usr\bin\git.exe describe --tags --dirty <==
+commit 0d93515fb826440d19707eee47fd92655fe2f166
+Merge: 3f28c5408 4ee834f68
+Author: Ralf Gommers <ralf.gommers@gmail.com>
+Date:   Tue Oct 15 09:23:00 2024 +0200
+
+    Merge pull request #17 from rgommers/aix-linker-issue
+    
+    linkers: Fix linker detection with clang on Solaris
+==> D:\Miniforge\Library\usr\bin\git.exe status <==
+HEAD detached at 0d93515fb
+nothing to commit, working tree clean

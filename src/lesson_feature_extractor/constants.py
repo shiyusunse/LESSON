@@ -37,6 +37,7 @@ MODEL_TO_FILES: Dict[str, Dict[str, str]] = {
 
 GT_CODE_JSON: str = "gt_code.json"
 TEST_CASE_JSON: str = "HumanEvalPlus-test.json"
+HUMAN_EVAL_FAILED_JSON: str = "HumanEvalFailed.json"
 
 BASE_MODEL_FEATURE_COLUMNS: List[str] = [
     "pass_rate",

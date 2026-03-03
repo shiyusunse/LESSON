@@ -1,0 +1,97 @@
+# This file created by conda-build 25.1.2
+# meta.yaml template originally from:
+# /home/conda/recipe_root, last modified Thu Mar 13 15:02:20 2025
+# ------------------------------------------------
+
+package:
+  name: threadpoolctl
+  version: 3.6.0
+source:
+  sha256: 8794160a4dca1f9039202189936acc36bf785c1f99cdc529a632204e88cd0de0
+  url: https://github.com/joblib/threadpoolctl/archive/3.6.0.tar.gz
+build:
+  noarch: python
+  number: '0'
+  script:
+    - /home/conda/feedstock_root/build_artifacts/threadpoolctl_1741878222898/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placeho/bin/python
+      -m flit install
+  string: pyhecae5ae_0
+requirements:
+  host:
+    - _libgcc_mutex 0.1 conda_forge
+    - _openmp_mutex 4.5 2_gnu
+    - brotli-python 1.1.0 py39hf88036b_2
+    - bzip2 1.0.8 h4bc722e_7
+    - ca-certificates 2025.1.31 hbcca054_0
+    - certifi 2025.1.31 pyhd8ed1ab_0
+    - cffi 1.17.1 py39h15c3d72_0
+    - charset-normalizer 3.4.1 pyhd8ed1ab_0
+    - docutils 0.21.2 pyhd8ed1ab_1
+    - flit 3.11.0 pyhd8ed1ab_0
+    - flit-core 3.11.0 pyhd8ed1ab_0
+    - h2 4.2.0 pyhd8ed1ab_0
+    - hpack 4.1.0 pyhd8ed1ab_0
+    - hyperframe 6.1.0 pyhd8ed1ab_0
+    - idna 3.10 pyhd8ed1ab_1
+    - ld_impl_linux-64 2.43 h712a8e2_4
+    - libffi 3.4.6 h2dba641_0
+    - libgcc 14.2.0 h767d61c_2
+    - libgcc-ng 14.2.0 h69a702a_2
+    - libgomp 14.2.0 h767d61c_2
+    - liblzma 5.6.4 hb9d3cd8_0
+    - libnsl 2.0.1 hd590300_0
+    - libsqlite 3.49.1 hee588c1_1
+    - libstdcxx 14.2.0 h8f9b012_2
+    - libuuid 2.38.1 h0b41bf4_0
+    - libxcrypt 4.4.36 hd590300_1
+    - libzlib 1.3.1 hb9d3cd8_2
+    - ncurses 6.5 h2d0b736_3
+    - openssl 3.4.1 h7b32b05_0
+    - pip 25.0.1 pyh8b19718_0
+    - pycparser 2.22 pyh29332c3_1
+    - pysocks 1.7.1 pyha55dd90_7
+    - python 3.9.21 h9c0c6dc_1_cpython
+    - python_abi 3.9 5_cp39
+    - readline 8.2 h8c095d6_2
+    - requests 2.32.3 pyhd8ed1ab_1
+    - setuptools 75.8.2 pyhff2d567_0
+    - tk 8.6.13 noxft_h4845f30_101
+    - tomli-w 1.2.0 pyhd8ed1ab_0
+    - tzdata 2025a h78e105d_0
+    - urllib3 2.3.0 pyhd8ed1ab_0
+    - wheel 0.45.1 pyhd8ed1ab_1
+    - zstandard 0.23.0 py39h8cd3c5a_1
+  run:
+    - python >=3.9
+test:
+  commands:
+    - python -m threadpoolctl -i numpy
+  imports:
+    - threadpoolctl
+  requires:
+    - numpy
+about:
+  description: 'Python helpers to introspect and limit the number of threads used
+
+    in native libraries that handle their own internal threadpool
+
+    (BLAS and OpenMP implementations).
+
+    '
+  dev_url: https://github.com/joblib/threadpoolctl
+  doc_url: https://github.com/joblib/threadpoolctl
+  home: https://github.com/joblib/threadpoolctl
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file: LICENSE
+  summary: Python helpers to control the threadpools of native libraries
+extra:
+  copy_test_source_files: true
+  final: true
+  flow_run_id: azure_20250313.5.1
+  recipe-maintainers:
+    - jeremiedbb
+    - ogrisel
+    - tomMoral
+  remote_url: https://github.com/conda-forge/threadpoolctl-feedstock
+  sha: 8164e8b66e93fa501e838ca2b61a570b406559e6

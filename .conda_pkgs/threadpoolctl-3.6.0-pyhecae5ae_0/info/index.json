@@ -1,0 +1,16 @@
+{
+  "arch": null,
+  "build": "pyhecae5ae_0",
+  "build_number": 0,
+  "depends": [
+    "python >=3.9"
+  ],
+  "license": "BSD-3-Clause",
+  "license_family": "BSD",
+  "name": "threadpoolctl",
+  "noarch": "python",
+  "platform": null,
+  "subdir": "noarch",
+  "timestamp": 1741878358548,
+  "version": "3.6.0"
+}

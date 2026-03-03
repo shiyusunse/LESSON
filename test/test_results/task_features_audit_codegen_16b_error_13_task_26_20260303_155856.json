@@ -1,0 +1,132 @@
+{
+  "input": {
+    "model": "CodeGen-16B",
+    "error_id": "13",
+    "task_id": 26,
+    "error_csv_path": "data\\defects4codellm-main\\data\\codegen-humaneval_error.csv",
+    "humaneval_jsonl_path": "data\\human-eval-master\\data\\HumanEval.jsonl\\human-eval-v2-20210705.jsonl"
+  },
+  "source_preview": {
+    "prompt_raw_preview": "from typing import List\n\n\ndef remove_duplicates(numbers: List[int]) -> List[int]:\n    \"\"\" From a list of integers, remove all elements that occur more than once.\n    Keep order of elements left the same as in the input.\n    >>> remove_duplicates([1, 2, 3, 2, 4])\n    [1, 3, 4]\n    \"\"\"\n",
+    "prompt_cleaned_preview": "from typing import List\n\n\ndef remove_duplicates(numbers: List[int]) -> List[int]:\n    \"\"\" From a list of integers, remove all elements that occur more than once.\n    Keep order of elements left the same as in the input.\n    \"\"\"\n",
+    "ground_truth_code_complete_preview": "from typing import List\n\n\ndef remove_duplicates(numbers: List[int]) -> List[int]:\n    \"\"\" From a list of integers, remove all elements that occur more than once.\n    Keep order of elements left the same as in the input.\n    >>> remove_duplicates([1, 2, 3, 2, 4])\n    [1, 3, 4]\n    \"\"\"\n    num_cnt = d",
+    "removed_example_lines_count": 2,
+    "ground_truth_code_complete_chars": 493
+  },
+  "prompt_len": {
+    "metric_name": "prompt_len",
+    "rule": "Remove doctest examples from prompt first. Then use CountVectorizer(lowercase=False, min_df=1, token_pattern=r'\\b\\w+\\b') and return token sum.",
+    "vectorizer_params": {
+      "lowercase": false,
+      "min_df": 1,
+      "token_pattern": "\\b\\w+\\b"
+    },
+    "prompt_raw_text": "from typing import List\n\n\ndef remove_duplicates(numbers: List[int]) -> List[int]:\n    \"\"\" From a list of integers, remove all elements that occur more than once.\n    Keep order of elements left the same as in the input.\n    >>> remove_duplicates([1, 2, 3, 2, 4])\n    [1, 3, 4]\n    \"\"\"\n",
+    "prompt_cleaned_text": "from typing import List\n\n\ndef remove_duplicates(numbers: List[int]) -> List[int]:\n    \"\"\" From a list of integers, remove all elements that occur more than once.\n    Keep order of elements left the same as in the input.\n    \"\"\"\n",
+    "removed_example_lines": [
+      "    >>> remove_duplicates([1, 2, 3, 2, 4])",
+      "    [1, 3, 4]"
+    ],
+    "prompt_raw_tokens_total_regex_s_plus": 44,
+    "prompt_cleaned_tokens_total_regex_s_plus": 35,
+    "vectorizer_feature_names_count": 29,
+    "vectorizer_feature_names_preview": [
+      "From",
+      "Keep",
+      "List",
+      "a",
+      "all",
+      "as",
+      "def",
+      "elements",
+      "from",
+      "import",
+      "in",
+      "input",
+      "int",
+      "integers",
+      "left",
+      "list",
+      "more",
+      "numbers",
+      "occur",
+      "of",
+      "once",
+      "order",
+      "remove",
+      "remove_duplicates",
+      "same",
+      "than",
+      "that",
+      "the",
+      "typing"
+    ],
+    "result": 35
+  },
+  "LOC": {
+    "metric_name": "LOC",
+    "rule": "LOC = non-empty lines of Ground Truth Code (Complete) - non-empty lines of prompt.",
+    "prompt_text": "from typing import List\n\n\ndef remove_duplicates(numbers: List[int]) -> List[int]:\n    \"\"\" From a list of integers, remove all elements that occur more than once.\n    Keep order of elements left the same as in the input.\n    >>> remove_duplicates([1, 2, 3, 2, 4])\n    [1, 3, 4]\n    \"\"\"\n",
+    "ground_truth_code_complete_text": "from typing import List\n\n\ndef remove_duplicates(numbers: List[int]) -> List[int]:\n    \"\"\" From a list of integers, remove all elements that occur more than once.\n    Keep order of elements left the same as in the input.\n    >>> remove_duplicates([1, 2, 3, 2, 4])\n    [1, 3, 4]\n    \"\"\"\n    num_cnt = dict()\n    for number in numbers:\n        if number not in num_cnt:\n            num_cnt[number] = 0\n        num_cnt[number] += 1\n    return [number for number in numbers if num_cnt[number] == 1]",
+    "prompt_non_empty_line_numbers": [
+      1,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "ground_truth_non_empty_line_numbers": [
+      1,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "result": 6
+  },
+  "ast_nodes": {
+    "metric_name": "ast_nodes",
+    "rule": "Parse AST of Ground Truth Code (Complete), then count all nodes from ast.walk.",
+    "ast_parse_ok": true,
+    "ast_parse_error": "",
+    "ast_root_type": "Module",
+    "ast_structure_dump": "Module(\n  body=[\n    ImportFrom(\n      module='typing',\n      names=[\n        alias(name='List')],\n      level=0),\n    FunctionDef(\n      name='remove_duplicates',\n      args=arguments(\n        posonlyargs=[],\n        args=[\n          arg(\n            arg='numbers',\n            annotation=Subscript(\n              value=Name(id='List', ctx=Load()),\n              slice=Name(id='int', ctx=Load()),\n              ctx=Load()))],\n        kwonlyargs=[],\n        kw_defaults=[],\n        defaults=[]),\n      body=[\n        Expr(\n          value=Constant(value=' From a list of integers, remove all elements that occur more than once.\\n    Keep order of elements left the same as in the input.\\n    >>> remove_duplicates([1, 2, 3, 2, 4])\\n    [1, 3, 4]\\n    ')),\n        Assign(\n          targets=[\n            Name(id='num_cnt', ctx=Store())],\n          value=Call(\n            func=Name(id='dict', ctx=Load()),\n            args=[],\n            keywords=[])),\n        For(\n          target=Name(id='number', ctx=Store()),\n          iter=Name(id='numbers', ctx=Load()),\n          body=[\n            If(\n              test=Compare(\n                left=Name(id='number', ctx=Load()),\n                ops=[\n                  NotIn()],\n                comparators=[\n                  Name(id='num_cnt', ctx=Load())]),\n              body=[\n                Assign(\n                  targets=[\n                    Subscript(\n                      value=Name(id='num_cnt', ctx=Load()),\n                      slice=Name(id='number', ctx=Load()),\n                      ctx=Store())],\n                  value=Constant(value=0))],\n              orelse=[]),\n            AugAssign(\n              target=Subscript(\n                value=Name(id='num_cnt', ctx=Load()),\n                slice=Name(id='number', ctx=Load()),\n                ctx=Store()),\n              op=Add(),\n              value=Constant(value=1))],\n          orelse=[]),\n        Return(\n          value=ListComp(\n            elt=Name(id='number', ctx=Load()),\n            generators=[\n              comprehension(\n                target=Name(id='number', ctx=Store()),\n                iter=Name(id='numbers', ctx=Load()),\n                ifs=[\n                  Compare(\n                    left=Subscript(\n                      value=Name(id='num_cnt', ctx=Load()),\n                      slice=Name(id='number', ctx=Load()),\n                      ctx=Load()),\n                    ops=[\n                      Eq()],\n                    comparators=[\n                      Constant(value=1)])],\n                is_async=0)]))],\n      decorator_list=[],\n      returns=Subscript(\n        value=Name(id='List', ctx=Load()),\n        slice=Name(id='int', ctx=Load()),\n        ctx=Load()))],\n  type_ignores=[])",
+    "node_type_counts": {
+      "Module": 1,
+      "ImportFrom": 1,
+      "FunctionDef": 1,
+      "alias": 1,
+      "arguments": 1,
+      "Expr": 1,
+      "Assign": 2,
+      "For": 1,
+      "Return": 1,
+      "Subscript": 5,
+      "arg": 1,
+      "Constant": 4,
+      "Name": 19,
+      "Call": 1,
+      "If": 1,
+      "AugAssign": 1,
+      "ListComp": 1,
+      "Load": 19,
+      "Store": 5,
+      "Compare": 2,
+      "Add": 1,
+      "comprehension": 1,
+      "NotIn": 1,
+      "Eq": 1
+    },
+    "result": 73
+  }
+}

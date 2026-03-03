@@ -1,0 +1,5 @@
+file:///E:/Anaconda/pkgs/threadpoolctl-3.6.0-pyhecae5ae_0.conda
+file:///E:/Anaconda/pkgs/joblib-1.5.1-pyhd8ed1ab_0.conda
+file:///E:/Anaconda/pkgs/numpy-2.2.6-py310h4987827_0.conda
+file:///E:/Anaconda/pkgs/scikit-learn-1.6.1-py310hf2a6c47_0.conda
+file:///E:/Anaconda/pkgs/scipy-1.15.2-py310h15c175c_0.conda

@@ -1,0 +1,31 @@
+{
+  "arch": "x86_64",
+  "build": "py310h15c175c_0",
+  "build_number": 0,
+  "channel": "<unknown>",
+  "constrains": [],
+  "depends": [
+    "libblas >=3.9.0,<4.0a0",
+    "libcblas >=3.9.0,<4.0a0",
+    "liblapack >=3.9.0,<4.0a0",
+    "numpy <2.5",
+    "numpy >=1.19,<3",
+    "numpy >=1.23.5",
+    "python >=3.10,<3.11.0a0",
+    "python_abi 3.10.* *_cp310",
+    "ucrt >=10.0.20348.0",
+    "vc >=14.2,<15",
+    "vc14_runtime >=14.29.30139"
+  ],
+  "fn": "scipy-1.15.2-py310h15c175c_0.conda",
+  "license": "BSD-3-Clause",
+  "md5": "81798168111d1021e3d815217c444418",
+  "name": "scipy",
+  "platform": "win32",
+  "sha256": "f19350c2061b1cdc3151a33c3dd4f71a1a481f9b10ac186674f957814bc839bc",
+  "size": 14352068,
+  "subdir": "win-64",
+  "timestamp": 1739793156239,
+  "url": "file:///E:/Anaconda/pkgs/scipy-1.15.2-py310h15c175c_0.conda",
+  "version": "1.15.2"
+}

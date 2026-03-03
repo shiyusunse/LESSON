@@ -1,0 +1,22 @@
+{
+  "build": "pyhecae5ae_0",
+  "build_number": 0,
+  "channel": "<unknown>",
+  "constrains": [],
+  "depends": [
+    "python >=3.9"
+  ],
+  "fn": "threadpoolctl-3.6.0-pyhecae5ae_0.conda",
+  "license": "BSD-3-Clause",
+  "license_family": "BSD",
+  "md5": "9d64911b31d57ca443e9f1e36b04385f",
+  "name": "threadpoolctl",
+  "noarch": "python",
+  "package_type": "noarch_python",
+  "sha256": "6016672e0e72c4cf23c0cf7b1986283bd86a9c17e8d319212d78d8e9ae42fdfd",
+  "size": 23869,
+  "subdir": "noarch",
+  "timestamp": 1741878358548,
+  "url": "file:///E:/Anaconda/pkgs/threadpoolctl-3.6.0-pyhecae5ae_0.conda",
+  "version": "3.6.0"
+}

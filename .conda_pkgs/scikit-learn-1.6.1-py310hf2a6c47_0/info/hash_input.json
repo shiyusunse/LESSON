@@ -1,0 +1,10 @@
+{
+  "python": "3.10.* *_cpython",
+  "cxx_compiler": "vs2019",
+  "numpy": "2.0",
+  "c_compiler": "vs2019",
+  "target_platform": "win-64",
+  "c_stdlib": "vs",
+  "channel_targets": "conda-forge main",
+  "CI": "azure"
+}

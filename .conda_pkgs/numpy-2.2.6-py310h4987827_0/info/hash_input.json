@@ -1,0 +1,13 @@
+{
+  "c_stdlib": "vs",
+  "channel_targets": "conda-forge main",
+  "python": "3.10.* *_cpython",
+  "libblas": "3.9.* *netlib",
+  "cxx_compiler": "vs2019",
+  "liblapack": "3.9.* *netlib",
+  "is_freethreading": "false",
+  "libcblas": "3.9.* *netlib",
+  "target_platform": "win-64",
+  "c_compiler": "vs2019",
+  "numpy": "1.22"
+}

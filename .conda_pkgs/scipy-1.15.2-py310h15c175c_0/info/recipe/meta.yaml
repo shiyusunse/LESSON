@@ -1,0 +1,204 @@
+# This file created by conda-build 25.1.2
+# ------------------------------------------------
+
+package:
+  name: scipy
+  version: 1.15.2
+source:
+  sha256: cd58a314d92838f7e6f755c8a2167ead4f27e1fd5c1251fd54289569ef3495ec
+  url: https://pypi.org/packages/source/s/scipy/scipy-1.15.2.tar.gz
+build:
+  ignore_run_exports:
+    - libflang
+  number: 0
+  string: py310h15c175c_0
+requirements:
+  build:
+    - clang 19.1.7 default_hec7ea82_1
+    - clang-19 19.1.7 default_hec7ea82_1
+    - compiler-rt 19.1.7 hc790b64_0
+    - compiler-rt_win-64 19.1.7 hc790b64_0
+    - flang 19.1.7 hbeecb71_0
+    - flang_impl_win-64 19.1.7 h719f0c7_0
+    - flang_win-64 19.1.7 h719f0c7_0
+    - libflang 19.1.7 he0c23c2_0
+    - libiconv 1.17 hcfcfb64_2
+    - libllvm19 19.1.7 h3089188_1
+    - libxml2 2.13.5 he286e8c_1
+    - libzlib 1.3.1 h2466b09_2
+    - lld 19.1.7 hd91d51b_0
+    - llvm-tools 19.1.7 h2a44499_1
+    - ucrt 10.0.22621.0 h57928b3_1
+    - vc 14.3 h5fd82a7_24
+    - vc14_runtime 14.42.34433 h6356254_24
+    - vs2019_win-64 19.29.30139 h7dcff83_24
+    - vs_win-64 2019.11 h7dcff83_24
+    - vswhere 3.1.7 h57928b3_0
+    - zstd 1.5.6 h0ea2cb4_0
+  host:
+    - beniget 0.4.2.post1 pyhd8ed1ab_1
+    - bzip2 1.0.8 h2466b09_7
+    - ca-certificates 2025.1.31 h56e8100_0
+    - clang 19.1.7 default_hec7ea82_1
+    - clang-19 19.1.7 default_hec7ea82_1
+    - clangxx 19.1.7 default_hec7ea82_1
+    - colorama 0.4.6 pyhd8ed1ab_1
+    - colorlog 6.9.0 pyh7428d3b_1
+    - cython 3.0.12 py310h6bd2d47_0
+    - decorator 5.1.1 pyhd8ed1ab_1
+    - gast 0.5.5 pyhd8ed1ab_0
+    - importlib-metadata 8.6.1 pyha770c72_0
+    - libblas 3.9.0 8_h719fc58_netlib
+    - libcblas 3.9.0 8_h719fc58_netlib
+    - libffi 3.4.6 h537db12_0
+    - libglib 2.82.2 h7025463_1
+    - libiconv 1.17 hcfcfb64_2
+    - libintl 0.22.5 h5728263_3
+    - liblapack 3.9.0 8_h719fc58_netlib
+    - liblzma 5.6.4 h2466b09_0
+    - libsqlite 3.48.0 h67fdade_1
+    - libzlib 1.3.1 h2466b09_2
+    - meson 1.7.0 pyhd8ed1ab_0
+    - meson-python 0.17.1 pyh70fd9c4_1
+    - ninja 1.12.1 hc790b64_0
+    - numpy 2.0.2 py310h1ec8c79_1
+    - openssl 3.4.1 ha4e3fda_0
+    - packaging 24.2 pyhd8ed1ab_2
+    - pcre2 10.44 h3d7b363_2
+    - pip 25.0.1 pyh8b19718_0
+    - pkg-config 0.29.2 h88c491f_1009
+    - ply 3.11 pyhd8ed1ab_3
+    - pybind11 2.13.6 pyh1ec8472_2
+    - pybind11-global 2.13.6 pyhab904b8_2
+    - pyproject-metadata 0.9.0 pyhd8ed1ab_1
+    - pyproject_hooks 1.2.0 pyhd8ed1ab_1
+    - python 3.10.16 h37870fc_1_cpython
+    - python-build 1.2.2.post1 pyhff2d567_1
+    - python_abi 3.10 5_cp310
+    - pythran 0.17.0 pyhf1ceabd_1
+    - setuptools 75.8.0 pyhff2d567_0
+    - tk 8.6.13 h5226925_1
+    - tomli 2.2.1 pyhd8ed1ab_1
+    - tzdata 2025a h78e105d_0
+    - ucrt 10.0.22621.0 h57928b3_1
+    - vc 14.3 h5fd82a7_24
+    - vc14_runtime 14.42.34433 h6356254_24
+    - wheel 0.45.1 pyhd8ed1ab_1
+    - zipp 3.21.0 pyhd8ed1ab_1
+    - zstd 1.5.6 h0ea2cb4_0
+  run:
+    - libblas >=3.9.0,<4.0a0
+    - libcblas >=3.9.0,<4.0a0
+    - liblapack >=3.9.0,<4.0a0
+    - numpy <2.5
+    - numpy >=1.19,<3
+    - numpy >=1.23.5
+    - python >=3.10,<3.11.0a0
+    - python_abi 3.10.* *_cp310
+    - ucrt >=10.0.20348.0
+    - vc >=14.2,<15
+    - vc14_runtime >=14.29.30139
+test:
+  commands:
+    - if exist %SP_DIR%\scipy\_lib\tests exit 1
+    - if exist %SP_DIR%\scipy\cluster\tests exit 1
+    - if exist %SP_DIR%\scipy\constants\tests exit 1
+    - if exist %SP_DIR%\scipy\datasets\tests exit 1
+    - if exist %SP_DIR%\scipy\fftpack\tests exit 1
+    - if exist %SP_DIR%\scipy\fft\tests exit 1
+    - if exist %SP_DIR%\scipy\integrate\tests exit 1
+    - if exist %SP_DIR%\scipy\interpolate\tests exit 1
+    - if exist %SP_DIR%\scipy\io\tests exit 1
+    - if exist %SP_DIR%\scipy\linalg\tests exit 1
+    - if exist %SP_DIR%\scipy\misc\tests exit 1
+    - if exist %SP_DIR%\scipy\ndimage\tests exit 1
+    - if exist %SP_DIR%\scipy\odr\tests exit 1
+    - if exist %SP_DIR%\scipy\optimize\tests exit 1
+    - if exist %SP_DIR%\scipy\signal\tests exit 1
+    - if exist %SP_DIR%\scipy\sparse\tests exit 1
+    - if exist %SP_DIR%\scipy\spatial\tests exit 1
+    - if exist %SP_DIR%\scipy\special\tests exit 1
+    - if exist %SP_DIR%\scipy\stats\tests exit 1
+    - if exist %SP_DIR%\scipy\_lib\_test_ccallback.cp310-win_amd64.pyd exit 1
+    - if exist %SP_DIR%\scipy\integrate\_test_multivariate.cp310-win_amd64.pyd exit
+      1
+    - if exist %SP_DIR%\scipy\io\_test_fortran.cp310-win_amd64.pyd exit 1
+    - if exist %SP_DIR%\scipy\ndimage\_ctest.cp310-win_amd64.pyd exit 1
+    - if exist %SP_DIR%\scipy\ndimage\_cytest.cp310-win_amd64.pyd exit 1
+    - if exist %SP_DIR%\scipy\special\_test_internal.cp310-win_amd64.pyd exit 1
+    - python -c "import scipy; throw_away_the_return_value = scipy.test()" > testlog
+    - python -c "import sys; lines=open('testlog').readlines(); sys.exit(0 if any('conda-forge
+      builds of' in x for x in lines) else 1)"
+    - (pytest --pyargs scipy || if !ERRORLEVEL! neq 0 exit 0) > testlog
+    - python -c "import sys; lines=open('testlog').readlines(); sys.exit(0 if any('conda-forge
+      builds of' in x for x in lines) else 1)"
+    - python -c "import sys; lines=open('testlog').readlines(); sys.exit(0 if any('========
+      1 failed' in x for x in lines) else 1)"
+  imports:
+    - scipy
+    - scipy.cluster
+    - scipy.cluster.hierarchy
+    - scipy.cluster.vq
+    - scipy.constants
+    - scipy.datasets
+    - scipy.fft
+    - scipy.fftpack
+    - scipy.integrate
+    - scipy.interpolate
+    - scipy.io
+    - scipy.io.arff
+    - scipy.io.matlab
+    - scipy.io.wavfile
+    - scipy.linalg
+    - scipy.linalg.blas
+    - scipy.linalg.cython_blas
+    - scipy.linalg.cython_lapack
+    - scipy.linalg.interpolative
+    - scipy.linalg.lapack
+    - scipy.misc
+    - scipy.ndimage
+    - scipy.odr
+    - scipy.optimize
+    - scipy.signal
+    - scipy.signal.windows
+    - scipy.sparse
+    - scipy.sparse.csgraph
+    - scipy.sparse.linalg
+    - scipy.spatial
+    - scipy.spatial.distance
+    - scipy.spatial.transform
+    - scipy.special
+    - scipy.stats
+    - scipy.stats.contingency
+    - scipy.stats.distributions
+    - scipy.stats.mstats
+    - scipy.stats.qmc
+    - scipy.stats.sampling
+  requires:
+    - hypothesis
+    - pytest
+about:
+  description: 'SciPy is a Python-based ecosystem of open-source software for mathematics,
+
+    science, and engineering.
+
+    '
+  dev_url: https://github.com/scipy/scipy
+  doc_url: http://www.scipy.org/docs.html
+  home: http://www.scipy.org/
+  license: BSD-3-Clause
+  license_file: LICENSE.txt
+  summary: Scientific Library for Python
+extra:
+  copy_test_source_files: true
+  feedstock-name: scipy
+  final: true
+  flow_run_id: azure_20250217.3.1
+  recipe-maintainers:
+    - h-vetinari
+    - jakirkham
+    - msarahan
+    - ocefpaf
+    - rgommers
+  remote_url: https://github.com/conda-forge/scipy-feedstock
+  sha: 1e665407f6222093df606d9e27553072b7222fc9

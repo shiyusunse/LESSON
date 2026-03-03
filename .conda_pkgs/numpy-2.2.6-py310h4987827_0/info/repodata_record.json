@@ -1,0 +1,30 @@
+{
+  "arch": "x86_64",
+  "build": "py310h4987827_0",
+  "build_number": 0,
+  "channel": "<unknown>",
+  "constrains": [
+    "numpy-base <0a0"
+  ],
+  "depends": [
+    "libblas >=3.9.0,<4.0a0",
+    "libcblas >=3.9.0,<4.0a0",
+    "liblapack >=3.9.0,<4.0a0",
+    "python >=3.10,<3.11.0a0",
+    "python_abi 3.10.* *_cp310",
+    "ucrt >=10.0.20348.0",
+    "vc >=14.2,<15",
+    "vc14_runtime >=14.29.30139"
+  ],
+  "fn": "numpy-2.2.6-py310h4987827_0.conda",
+  "license": "BSD-3-Clause",
+  "md5": "d2596785ac2cf5bab04e2ee9e5d04041",
+  "name": "numpy",
+  "platform": "win32",
+  "sha256": "6f628e51763b86a535a723664e3aa1e38cb7147a2697f80b75c1980c1ed52f3e",
+  "size": 6596153,
+  "subdir": "win-64",
+  "timestamp": 1747545352390,
+  "url": "file:///E:/Anaconda/pkgs/numpy-2.2.6-py310h4987827_0.conda",
+  "version": "2.2.6"
+}
