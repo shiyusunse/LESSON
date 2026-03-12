@@ -9,7 +9,7 @@ import re
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
 import pytest
 
@@ -83,6 +83,12 @@ def _patch_heavy_dependencies(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(mf, "semgrep_issue_count", lambda _: 0.0)
     monkeypatch.setattr(mf, "pylint_code_smell_counts", _fake_pylint)
     monkeypatch.setattr(mf, "timeout_rate_from_cases", lambda **_: 0.0)
+
+
+def _reset_python_runner_cache(monkeypatch: pytest.MonkeyPatch) -> None:
+    """重置 Python runner 缓存，避免测试间污染。"""
+    monkeypatch.setattr(mf, "_PYTHON_RUNNER", None)
+    monkeypatch.setattr(mf, "_PYTHON_RUNNER_READY", False)
 
 
 def _resolve_model_name(user_model: str) -> str:
@@ -365,6 +371,50 @@ def test_build_test_case_total_map_sums_base_input_and_plus_input(tmp_path: Path
     total_map: Dict[int, int] = mf.build_test_case_total_map(testcase_json_path, "utf-8")
     assert total_map[0] == 3
     assert total_map[1] == 3
+
+
+def test_python_runner_falls_back_to_path_python_when_sys_executable_unavailable(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """当 sys.executable 不可用时，应回退到 PATH 中的 python。"""
+    _reset_python_runner_cache(monkeypatch)
+    fallback_python = r"C:\Python39\python.exe"
+
+    monkeypatch.setattr(mf.sys, "executable", r"Z:\missing\python.exe")
+    monkeypatch.setattr(
+        mf,
+        "shutil_which",
+        lambda name: fallback_python if name == "python" else None,
+    )
+
+    def fake_run(cmd: List[str], **_: Any) -> Any:
+        if cmd == [fallback_python, "-c", "import sys"]:
+            return type("Completed", (), {"returncode": 0, "stdout": "", "stderr": ""})()
+        raise AssertionError(f"Unexpected command: {cmd}")
+
+    monkeypatch.setattr(mf.subprocess, "run", fake_run)
+    assert mf.python_runner() == [fallback_python]
+
+
+def test_timeout_rate_from_cases_returns_zero_when_runner_cannot_start(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """子进程命令缺失时，timeout_rate 应安全回退为 0，避免主线崩溃。"""
+    monkeypatch.setattr(mf, "python_runner", lambda: [r"Z:\missing\python.exe"])
+    monkeypatch.setattr(mf, "_TIMEOUT_RATE_CACHE", {})
+
+    def fake_run(*_: Any, **__: Any) -> Any:
+        raise FileNotFoundError("missing python runner")
+
+    monkeypatch.setattr(mf.subprocess, "run", fake_run)
+    value = mf.timeout_rate_from_cases(
+        task_id=0,
+        source_code="def f(x):\n    return x\n",
+        entry_point="f",
+        test_cases=[[1]],
+        time_limit=0.1,
+    )
+    assert value == 0.0
 
 
 def test_build_model_feature_map_pass_rate_and_run_err_rate_formula(

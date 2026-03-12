@@ -136,6 +136,7 @@ def main() -> None:
         defects_data_dir=Path(args.defects_data_dir),
         models=list(MODEL_TO_FILES.keys()),
         encoding=args.encoding,
+        require_all_humaneval_tasks=False,
     )
     summary = run_feature_pipeline(
         defects_data_dir=Path(args.defects_data_dir),
