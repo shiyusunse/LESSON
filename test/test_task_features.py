@@ -428,5 +428,27 @@ def test_build_task_feature_map_raises_when_ground_truth_missing(tmp_path: Path)
         raise AssertionError("Expected ValueError for missing ground truth, but no exception was raised.")
 
 
-if __name__ == "__main__":
-    main()
+def test_build_task_feature_map_non_strict_skips_unmatched_humaneval_tasks(tmp_path: Path) -> None:
+    """Non-strict mode should ignore HumanEval tasks without matched ground truth."""
+    humaneval_rows: List[Dict[str, Any]] = [
+        {"task_id": "HumanEval/0", "prompt": "x = 1\n", "canonical_solution": "x = 2\n"},
+        {"task_id": "HumanEval/1", "prompt": "y = 1\n", "canonical_solution": "y = 2\n"},
+    ]
+    humaneval_jsonl_path = tmp_path / "humaneval.jsonl"
+    _write_jsonl(humaneval_jsonl_path, humaneval_rows)
+
+    defects_dir = tmp_path / "defects"
+    _write_error_csv(
+        defects_dir / MODEL_TO_FILES["CodeGen-16B"]["error_csv"],
+        [{"Error ID": "1", "Model": "CodeGen-16B", "Task ID": "0", GROUND_TRUTH_COLUMN: "x = 1\n"}],
+    )
+
+    feature_map = build_task_feature_map(
+        humaneval_jsonl_path=humaneval_jsonl_path,
+        defects_data_dir=defects_dir,
+        models=["CodeGen-16B"],
+        encoding="utf-8",
+        require_all_humaneval_tasks=False,
+    )
+
+    assert set(feature_map.keys()) == {0}

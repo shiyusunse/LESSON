@@ -1,0 +1,16 @@
+Command: C:\Users\SCZM\Desktop\lesson\LESSON\src\run_feature_extraction.py --models StarCoder --run-name smoke_starcoder_after_runner_fix --output-root C:\Users\SCZM\Desktop\lesson\LESSON\work_dirs
+Environment: Python 3.13.12
+Seed: 42
+Git Hash: b11d41d82225281ae4b744d45ba0a3961992e28d
+Config:
+  defects_data_dir: data/defects4codellm-main/data
+  website_data_dir: data/defects4codellm-main/website/src/data
+  humaneval_jsonl_path: data/human-eval-master/data/HumanEval.jsonl/human-eval-v2-20210705.jsonl
+  output_root: C:\Users\SCZM\Desktop\lesson\LESSON\work_dirs
+  run_name: smoke_starcoder_after_runner_fix
+  seed: 42
+  models: StarCoder
+  encoding: utf-8
+
+Output Summary:
+  StarCoder: 123 rows

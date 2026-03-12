@@ -149,23 +149,36 @@ def build_task_feature_map(
     defects_data_dir: Path,
     models: Sequence[str],
     encoding: str,
+    require_all_humaneval_tasks: bool = True,
 ) -> Dict[int, Dict[str, Any]]:
-    """Build mapping from task_id to task complexity features."""
+    """Build mapping from task_id to task complexity features.
+
+    When require_all_humaneval_tasks=False, tasks that appear in HumanEval but have
+    no matched ground truth in defects CSVs are skipped.
+    """
     rows = load_jsonl(humaneval_jsonl_path, encoding)
     ground_truth_map = _build_ground_truth_map(defects_data_dir, models, encoding)
 
-    task_feature_map: Dict[int, Dict[str, Any]] = {}
+    prompt_map: Dict[int, str] = {}
     for row in rows:
         task_id = parse_task_id(row["task_id"])
-        prompt = str(row.get("prompt", ""))
-        cleaned_prompt, _ = strip_prompt_test_examples(prompt)
-        ground_truth_code = ground_truth_map.get(task_id)
-        if ground_truth_code is None:
-            raise ValueError(
-                "Ground Truth Code (Complete) missing after multi-model aggregation for "
-                f"task_id={task_id}."
-            )
+        prompt_map[task_id] = str(row.get("prompt", ""))
 
+    if require_all_humaneval_tasks:
+        for task_id in prompt_map:
+            if task_id not in ground_truth_map:
+                raise ValueError(
+                    "Ground Truth Code (Complete) missing after multi-model aggregation for "
+                    f"task_id={task_id}."
+                )
+
+    task_feature_map: Dict[int, Dict[str, Any]] = {}
+    for task_id, ground_truth_code in ground_truth_map.items():
+        prompt = prompt_map.get(task_id)
+        if prompt is None:
+            raise ValueError(f"Prompt missing in HumanEval JSONL for task_id={task_id}.")
+
+        cleaned_prompt, _ = strip_prompt_test_examples(prompt)
         task_feature_map[task_id] = {
             TASK_FEATURE_COLUMNS[0]: count_prompt_words(cleaned_prompt),
             TASK_FEATURE_COLUMNS[1]: count_loc(ground_truth_code) - count_loc(prompt),

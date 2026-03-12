@@ -1,0 +1,132 @@
+{
+  "input": {
+    "model": "GPT-4",
+    "error_id": "393",
+    "task_id": 32,
+    "defects_data_dir": "data\\defects4codellm-main\\data",
+    "website_data_dir": "data\\defects4codellm-main\\website\\src\\data",
+    "error_csv_path": "data\\defects4codellm-main\\data\\gpt-4-humaneval_error.csv",
+    "model_test_json_path": "data\\defects4codellm-main\\website\\src\\data\\gpt4_test.json",
+    "testcase_json_path": "data\\defects4codellm-main\\website\\src\\data\\HumanEvalPlus-test.json",
+    "human_eval_failed_json_path": "data\\defects4codellm-main\\website\\src\\data\\HumanEvalFailed.json"
+  },
+  "formula": {
+    "pass_rate": "1 - fail_count / total_count",
+    "run_err_rate": "fail_count / total_count",
+    "total_count": "fixed 164"
+  },
+  "process": {
+    "fail_count_from_human_eval_failed_json": 18,
+    "total_count_fixed": 164,
+    "pass_count_from_test_json_for_semantics_check": "len(base)+len(plus) -> 100",
+    "target_row_base_count": 100,
+    "target_row_plus_count": 0
+  },
+  "result": {
+    "fail_count": 18,
+    "pass_count": 100,
+    "total_count": 164,
+    "pass_rate": 0.890244,
+    "run_err_rate": 0.109756,
+    "formula_check_passed": true
+  },
+  "base_plus_semantics_check": {
+    "sample_size": 20,
+    "conclusion": "inconclusive_from_current_sample",
+    "confidence": "medium",
+    "reason": "当前抽查样本未出现 pass_count=0 的强证据，暂无法高置信度判定。",
+    "checked_rows_preview": [
+      {
+        "error_id": "393",
+        "task_id": 32,
+        "pass_count": 100,
+        "total_count": 928,
+        "pass_rate": 0.107759,
+        "run_err_rate_if_pass_semantics": 0.892241,
+        "run_err_rate_if_fail_semantics": 0.107759
+      },
+      {
+        "error_id": "399",
+        "task_id": 68,
+        "pass_count": 8,
+        "total_count": 1008,
+        "pass_rate": 0.007937,
+        "run_err_rate_if_pass_semantics": 0.992063,
+        "run_err_rate_if_fail_semantics": 0.007937
+      },
+      {
+        "error_id": "400",
+        "task_id": 74,
+        "pass_count": 1,
+        "total_count": 986,
+        "pass_rate": 0.001014,
+        "run_err_rate_if_pass_semantics": 0.998986,
+        "run_err_rate_if_fail_semantics": 0.001014
+      },
+      {
+        "error_id": "401",
+        "task_id": 75,
+        "pass_count": 4,
+        "total_count": 151,
+        "pass_rate": 0.02649,
+        "run_err_rate_if_pass_semantics": 0.97351,
+        "run_err_rate_if_fail_semantics": 0.02649
+      },
+      {
+        "error_id": "403",
+        "task_id": 83,
+        "pass_count": 5,
+        "total_count": 109,
+        "pass_rate": 0.045872,
+        "run_err_rate_if_pass_semantics": 0.954128,
+        "run_err_rate_if_fail_semantics": 0.045872
+      },
+      {
+        "error_id": "404",
+        "task_id": 83,
+        "pass_count": 5,
+        "total_count": 109,
+        "pass_rate": 0.045872,
+        "run_err_rate_if_pass_semantics": 0.954128,
+        "run_err_rate_if_fail_semantics": 0.045872
+      },
+      {
+        "error_id": "405",
+        "task_id": 84,
+        "pass_count": 5,
+        "total_count": 216,
+        "pass_rate": 0.023148,
+        "run_err_rate_if_pass_semantics": 0.976852,
+        "run_err_rate_if_fail_semantics": 0.023148
+      },
+      {
+        "error_id": "406",
+        "task_id": 91,
+        "pass_count": 6,
+        "total_count": 1006,
+        "pass_rate": 0.005964,
+        "run_err_rate_if_pass_semantics": 0.994036,
+        "run_err_rate_if_fail_semantics": 0.005964
+      },
+      {
+        "error_id": "407",
+        "task_id": 91,
+        "pass_count": 6,
+        "total_count": 1006,
+        "pass_rate": 0.005964,
+        "run_err_rate_if_pass_semantics": 0.994036,
+        "run_err_rate_if_fail_semantics": 0.005964
+      },
+      {
+        "error_id": "408",
+        "task_id": 93,
+        "pass_count": 5,
+        "total_count": 1005,
+        "pass_rate": 0.004975,
+        "run_err_rate_if_pass_semantics": 0.995025,
+        "run_err_rate_if_fail_semantics": 0.004975
+      }
+    ],
+    "zero_pass_examples_preview": []
+  }
+}

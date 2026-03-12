@@ -7,6 +7,7 @@ import hashlib
 import json
 import keyword
 import math
+import os
 import re
 import shutil
 import subprocess
@@ -38,6 +39,8 @@ _PYLINT_AVAILABLE: bool | None = None
 _PYLINT_RUNNER: List[str] | None = None
 _TIMEOUT_RATE_CACHE: Dict[Tuple[str, int], float] = {}
 _TIMEOUT_SAMPLE_LIMIT = 50
+_PYTHON_RUNNER: List[str] | None = None
+_PYTHON_RUNNER_READY: bool = False
 
 
 @contextmanager
@@ -194,6 +197,70 @@ def black_diff_count(source_code: str) -> float:
     return float(changed)
 
 
+def _command_exists(command: List[str]) -> bool:
+    """验证命令前缀是否可启动。"""
+    try:
+        result = subprocess.run(
+            list(command) + ["-c", "import sys"],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="ignore",
+            check=False,
+        )
+    except (FileNotFoundError, OSError):
+        return False
+    return result.returncode == 0
+
+
+def python_runner() -> List[str] | None:
+    """返回可执行的 Python 命令前缀，兼容 IDE / Windows 启动差异。"""
+    global _PYTHON_RUNNER
+    global _PYTHON_RUNNER_READY
+    if _PYTHON_RUNNER_READY:
+        return list(_PYTHON_RUNNER) if _PYTHON_RUNNER is not None else None
+
+    candidates: List[List[str]] = []
+    seen: set[Tuple[str, ...]] = set()
+
+    def _append(candidate: List[str]) -> None:
+        key = tuple(candidate)
+        if key not in seen:
+            seen.add(key)
+            candidates.append(candidate)
+
+    executable = str(sys.executable).strip()
+    if executable and Path(executable).exists():
+        _append([executable])
+
+    env_python = str(os.environ.get("PYTHON", "")).strip()
+    if env_python:
+        if Path(env_python).exists():
+            _append([env_python])
+        else:
+            _append([env_python])
+
+    for command_name in ("python", "python3"):
+        resolved = shutil_which(command_name)
+        if resolved:
+            _append([resolved])
+
+    if os.name == "nt":
+        launcher = shutil_which("py")
+        if launcher:
+            _append([launcher, "-3"])
+
+    for candidate in candidates:
+        if _command_exists(candidate):
+            _PYTHON_RUNNER = list(candidate)
+            _PYTHON_RUNNER_READY = True
+            return list(_PYTHON_RUNNER)
+
+    _PYTHON_RUNNER = None
+    _PYTHON_RUNNER_READY = True
+    return None
+
+
 def semgrep_available() -> bool:
     """判断 semgrep 是否可用。"""
     global _SEMGREP_AVAILABLE
@@ -202,8 +269,12 @@ def semgrep_available() -> bool:
     if shutil_which("semgrep"):
         _SEMGREP_AVAILABLE = True
         return True
+    runner = python_runner()
+    if runner is None:
+        _SEMGREP_AVAILABLE = False
+        return False
     result = subprocess.run(
-        [sys.executable, "-m", "semgrep", "--version"],
+        list(runner) + ["-m", "semgrep", "--version"],
         capture_output=True,
         text=True,
         encoding="utf-8",
@@ -226,8 +297,14 @@ def semgrep_runner() -> List[str] | None:
         _SEMGREP_AVAILABLE = True
         return list(_SEMGREP_RUNNER)
 
+    runner = python_runner()
+    if runner is None:
+        _SEMGREP_RUNNER = None
+        _SEMGREP_AVAILABLE = False
+        return None
+
     result = subprocess.run(
-        [sys.executable, "-m", "semgrep", "--version"],
+        list(runner) + ["-m", "semgrep", "--version"],
         capture_output=True,
         text=True,
         encoding="utf-8",
@@ -235,7 +312,7 @@ def semgrep_runner() -> List[str] | None:
         check=False,
     )
     if result.returncode == 0:
-        _SEMGREP_RUNNER = [sys.executable, "-m", "semgrep"]
+        _SEMGREP_RUNNER = list(runner) + ["-m", "semgrep"]
         _SEMGREP_AVAILABLE = True
         return list(_SEMGREP_RUNNER)
 
@@ -303,18 +380,20 @@ def pylint_runner() -> List[str] | None:
     if _PYLINT_RUNNER is not None:
         return list(_PYLINT_RUNNER)
 
-    result = subprocess.run(
-        [sys.executable, "-m", "pylint", "--version"],
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="ignore",
-        check=False,
-    )
-    if result.returncode == 0:
-        _PYLINT_RUNNER = [sys.executable, "-m", "pylint"]
-        _PYLINT_AVAILABLE = True
-        return list(_PYLINT_RUNNER)
+    runner = python_runner()
+    if runner is not None:
+        result = subprocess.run(
+            list(runner) + ["-m", "pylint", "--version"],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="ignore",
+            check=False,
+        )
+        if result.returncode == 0:
+            _PYLINT_RUNNER = list(runner) + ["-m", "pylint"]
+            _PYLINT_AVAILABLE = True
+            return list(_PYLINT_RUNNER)
 
     if shutil_which("pylint"):
         cmd = ["pylint", "--version"]
@@ -452,6 +531,11 @@ def timeout_rate_from_cases(task_id: int, source_code: str, entry_point: str, te
     if cache_key in _TIMEOUT_RATE_CACHE:
         return _TIMEOUT_RATE_CACHE[cache_key]
 
+    runner = python_runner()
+    if runner is None:
+        _TIMEOUT_RATE_CACHE[cache_key] = 0.0
+        return 0.0
+
     eval_cases = test_cases
     if len(test_cases) > _TIMEOUT_SAMPLE_LIMIT:
         step = len(test_cases) / _TIMEOUT_SAMPLE_LIMIT
@@ -464,7 +548,7 @@ def timeout_rate_from_cases(task_id: int, source_code: str, entry_point: str, te
         module_path.write_text(source_code, encoding="utf-8")
         _build_timeout_runner_script(runner_path)
 
-        cmd = [sys.executable, str(runner_path), str(module_path), entry_point]
+        cmd = list(runner) + [str(runner_path), str(module_path), entry_point]
         for test_case in eval_cases:
             try:
                 payload = json.dumps(test_case, ensure_ascii=False)
@@ -480,6 +564,9 @@ def timeout_rate_from_cases(task_id: int, source_code: str, entry_point: str, te
                 )
             except subprocess.TimeoutExpired:
                 timeout_count += 1
+            except (FileNotFoundError, OSError):
+                _TIMEOUT_RATE_CACHE[cache_key] = 0.0
+                return 0.0
 
     timeout_rate = timeout_count / max(len(eval_cases), 1)
     _TIMEOUT_RATE_CACHE[cache_key] = timeout_rate
